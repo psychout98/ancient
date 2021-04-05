@@ -1,0 +1,62 @@
+<Html>
+<Head>
+<Title>Diamondrock - Netlogicdc</Title>
+<link rel="shortcut icon" type="image/x-icon" href="logo.png" />
+</Head>
+<Body bgcolor="#8CCA61" style="margin:50px 80px 80px 80px">
+<a href="http://www.netlogicdc.com"><img src="logo-white.png" 
+style="width:240px;height:58px;"><br><br><br></a>
+<div style="float:right;width:40%"><div style="float:right;">
+<font size="4" color="white" face="Ariel">Search users:</font>
+<input onkeypress="gathertext(form)" type="search" name="searcher"></div><br><br>
+<font size="5" color="white" face="Ariel">User List</font><br><br>
+<div style="overflow:scroll;width:100%;height:540px;border:1px solid gray;background:#7BB950;">
+<a><a style="float:left;margin:10px"><font size="4" color="black" face="Ariel">Fake User</font></a>
+<a style="float:right;margin:10px"><input type="button" onclick = "showUser('fakeuser')" name="fake-user" value="View User Data"></a></a>
+</div></div><div style="float:left;width:55%;height:540px"><font id="i1" size="6" color="white" face="Ariel">Diamondrock Hospitality</font><br><br>
+<a style="float:right;"><input type="button" value="New User" onclick="showUser('new')"><input type="button" onclick="makefile()"
+ value="Save User"></a><br><br><form id="uform" style="float:left;overflow:scroll;width:100%;height:520px;border:1px solid gray;background:#7BB950;">
+<div style="margin:10px"><font  size="4" color="black" face="Ariel">These documents serve as tools for adding and editing users and allows netlogicdc 
+technicians to set appropriate permissions for the new user. For security reasons, any new or revised documents must be 
+authorized by an authority at <a id="clientname">Diamondrock Hospitality</a> to be valid.</font></div>
+</form>
+</div>
+<script>
+function checkdoc(){
+var f = document.getElementById("uform");
+var fname = f.fname.value;var lname = f.lname.value;var etitle = f.etitle.value;var phonext = f.phonext.value;
+var sdate = f.sdate.value;var dlocat = f.dlocat.value;var email = f.email.value;var duname = f.duname.value;
+var dpass = f.dpass.value;var emalias = f.emalias.value;var otheremp1 = f.otheremp1.value;var Achecked = f.Achecked.value;
+var Bchecked = f.Bchecked.value;var Cchecked = f.Cchecked.value;var Dchecked = f.Dchecked.value;var CLchecked = f.CLchecked.value;
+var Echecked = f.Echecked.value;var ucal = f.ucal.value;var gcal = f.gcal.value;var empaccn = f.empaccn.value;
+var empaccy = f.empaccy.value;var appaccy1 = f.appaccy1.value;var empaccn2 = f.empaccn2.value;var empaccy2 = f.empaccy2.value;
+var otheremp2 = f.otheremp2.value;var ALchecked = f.ALchecked.value;var BLchecked = f.BLchecked.value;var DLchecked = f.DLchecked.value;
+var ELchecked = f.ELchecked.value;var printers = f.printers.value;var otherDevs = f.otherDevs.value;var appaccn1 = f.appaccn1.value;
+var acclev1 = f.acclev1.value;var appaccn2 = f.appaccn2.value;var appaccy2 = f.appaccy2.value;var acclev2 = f.acclev2.value;
+var appaccn3 = f.appaccn3.value;var acclev3 = f.acclev3.value;var remaccy = f.remaccy.value;var remaccn = f.remaccn.value;
+var remacc = f.remacc.value;var special = f.special.value;var appaccy3 = f.appaccy3.value;
+
+}
+
+function showUser(x){
+if(x=="new"){
+userinfo = new Array("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+}
+else{
+var filename = x+".txt";
+userinfo = new Array("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+}
+document.getElementById("uform").innerHTML="<div style=\"margin:10px\">"+
+"<font size=\"3\" color=\"black\" face=\"Helvetica\">"+
+
+
+"Provide general user information.<input style=\"float:right;color:red;\" type=\"button\"onclick=\"memo()\"  value=\"X\"><br><br>First Name: <input id=\"fname\" type=\"text\" value=\""+userinfo[0]+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: <input type=\"text\" value=\""+userinfo[1]+"\"><br><br>Employee Title: <input type=\"text\" value=\""+userinfo[2]+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone Extension: <input type=\"text\" value=\""+userinfo[3]+"\"><br><br>Start Date: <input type=\"text\" value=\""+userinfo[4]+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email Aliases (if any): <input type=\"text\" size=\"20\" value=\""+userinfo[5]+"\"><br><br>Should the user be included in any of the following email distribution lists?<br><br><br><input type=\"checkbox\" name=\"edist1\" value=\"edist1\" "+userinfo[6]+"> No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"edist2\" value=\"edist2\" "+userinfo[7]+"> All-DiamondRock-Users&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"edist3\" value=\"edist3\" "+userinfo[8]+"> DRG-Office-Users&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"edist4\" value=\"edist4\" "+userinfo[9]+">generalvm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br><br><br>Should the user have a mobile device set up for DRHC email?<br><br><input type=\"checkbox\" name=\"devn\" value=\"devn\" "+userinfo[10]+"> No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"devy\" value=\"devy\" "+userinfo[11]+"> Yes (Specify Device Type:<input type=\"text\" value = \""+userinfo[12]+"\">)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br><br><br>Provide specific access information. Set permissions to drives, resources, etc.<br><br>Should the user have FAS access?<input type=\"checkbox\" name=\"FASy\">Yes<input type=\"checkbox\" name=\"FASn\">No<br><br>Should the user have Solomon access?<input type=\"checkbox\" name=\"soly\">Yes<input type=\"checkbox\" name=\"soln\">No<br><br>Which networked drives should the user have access to?<br><br><input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[13]+"> S: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"BD\" value=\"BD\" "+userinfo[14]+"> T: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"CD\" value=\"CD\" "+userinfo[15]+"> Y: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"DD\" value=\"DD\" "+userinfo[16]+"> G: (only if backwards compatibility is needed)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br><br>Which calendars should the user have access to?<br><br>An Employee's (specify): <input type=\"text\" value=\""+userinfo[17]+"\"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(privilege level:<input type=\"text\" value=\""+userinfo[18]+"\">)<br><br><br>A Group's (specify): <input type=\"text\" value=\""+userinfo[19]+"\"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(privilege level:<input type=\"text\" value=\""+userinfo[20]+"\">)<br><br><br>Should existing users have access to the new user's calendar?<br><br><input type=\"checkbox\" name=\"empaccn2\" value=\"empaccn2\" "+userinfo[21]+"> No<input type=\"checkbox\" name=\"empaccy2\" value=\"empaccy\" "+userinfo[22]+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;Specify: <input type=\"text\" value=\""+userinfo[23]+"\"><br><br><br>Should existing users have access to the new user's email?<br><br><input type=\"checkbox\" name=\"empaccn2\" value=\"empaccn2\" "+userinfo[24]+"> No<input type=\"checkbox\" name=\"empaccy2\" value=\"empaccy\" "+userinfo[25]+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;Specify: <input type=\"text\" value=\""+userinfo[26]+"\"><br><br><br>Should the user have access to another user's email?<br><br><input type=\"checkbox\" name=\"empaccn\" value=\"empaccn\" "+userinfo[27]+"> No<input type=\"checkbox\" name=\"empaccy\" value=\"empaccy\" "+userinfo[28]+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;Specify: <input type=\"text\" value=\""+userinfo[29]+"\"><br><br><br><br><br>Which shared peripherals should the user have access to?<br><br>Printers: <input type=\"text\" value=\""+userinfo[30]+"\"> Other Devices: <input type=\"text\" value=\""+userinfo[31]+"\"><br><br><br><br>Special instructions<textarea name=\"specinstructs\" style=\"margin:2;resize:none\" cols=\"86\" rows=\"10\">"+userinfo[32]+"</textarea></font></div>";
+}
+function memo(){
+document.getElementById("uform").innerHTML="<div style=\"margin:10px\"><font  size=\"4\" color=\"black\" face=\"Ariel\">These documents serve as tools for adding and editing users and allows netlogicdc "+
+"technicians to set appropriate permissions for the new user. For security reasons, any new or revised documents must be "+
+"authorized by an authority at <a id=\"clientname\">Test Client</a> to be valid.</font></div>";
+}
+</script>
+</Body>
+</Html>

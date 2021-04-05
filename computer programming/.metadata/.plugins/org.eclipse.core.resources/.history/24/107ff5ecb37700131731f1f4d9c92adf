@@ -1,0 +1,11 @@
+// Noah Heath pd. 4 Semester 1 Project
+import java.util.*;
+public class Table {
+
+	public static void main(String[] args) {
+	System.out.println("Welcome to Food'n'Stuff,\nwe have really good food, and pretty good stuff.");	
+		
+		
+	}
+
+}

@@ -1,0 +1,6 @@
+no:Why so negative?
+i <variable> you:Why do you <variable> me?
+i don't <variable> you:Why don't you <variable> me?
+i want to <variable>:What would it mean to <variable>?
+calculate:*Calculator.class;
+hello:Hi.~Sup.~Hola.

@@ -1,0 +1,46 @@
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+
+
+public class samsint {
+
+	/**
+	 * @param args
+	 * @throws AWTException 
+	 * @throws InterruptedException 
+	 */
+	public static void main(String[] args) throws AWTException, InterruptedException {
+		// TODO Auto-generated method stub
+		Robot r = new Robot();
+		Thread.sleep(10000);
+		for(int i=0;i<1000; i++){
+		r.keyPress(KeyEvent.VK_SHIFT);
+		 r.keyPress(KeyEvent.VK_F);
+		 r.keyRelease(KeyEvent.VK_SHIFT);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_U);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_C);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_K);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_SPACE);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_Y);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_O);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_U);
+		 Thread.sleep(10);
+		 r.keyPress(KeyEvent.VK_SPACE);
+		 Thread.sleep(10);
+		 for(int j=0;j<9; j++){
+				r.keyPress(KeyEvent.VK_BACK_SPACE);
+				Thread.sleep(10);
+			}
+		 
+		}
+		
+	}
+}

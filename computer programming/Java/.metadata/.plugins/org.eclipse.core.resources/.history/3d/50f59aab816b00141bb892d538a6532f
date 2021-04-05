@@ -1,0 +1,5 @@
+hello:Hi.~Sup?~Hola.~What's up?
+i <variable> you:Why do you <variable> me?
+i don't <variable> you:Why don't you <variable> me?
+i want to <variable>:What would it mean to <variable>?
+calculate:*Calculator.class;

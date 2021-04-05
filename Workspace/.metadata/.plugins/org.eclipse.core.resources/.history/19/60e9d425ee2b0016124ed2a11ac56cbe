@@ -1,0 +1,104 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.*;
+
+public class logo extends JFrame implements ActionListener, KeyListener{
+	
+	JPanel panel, top;
+	JButton newLine;
+	JTextPane tpx,tpy;
+	
+	logo() throws InterruptedException{
+		this.setSize(600, 700);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		top = new JPanel(new GridLayout(1,5));
+		tpx = new JTextPane();
+		tpx.setBorder(BorderFactory.createLineBorder(Color.black));
+		tpy = new JTextPane();
+		tpy.setBorder(BorderFactory.createLineBorder(Color.black));
+		newLine = new JButton("Add Line");
+		newLine.addActionListener(this);
+		JLabel lx = new JLabel("X:"),ly = new JLabel("Y:");
+		top.add(lx);
+		top.add(tpx);
+		top.add(ly);
+		top.add(tpy);
+		top.add(newLine);
+		panel = new graphic();
+		this.add(top,BorderLayout.NORTH);
+		this.add(panel, BorderLayout.CENTER);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(3);
+		while(true){
+			Thread.sleep(42);
+			repaint();
+		}
+	}
+	
+	public static void main(String[] args) throws InterruptedException{
+		logo window = new logo();
+	}
+
+	public class graphic extends JPanel{
+	
+	public void paint(Graphics p){
+		setSize(600,600);
+		p.setColor(Color.white);
+		p.fillRect(0, 0, 600, 600);
+		p.setColor(Color.gray);
+		int o = 300, xs = (int)(10*Math.sqrt(3)), ys = 10,xl=620/xs,yl=300/ys;
+		for(int i=0;i<xl;i++){
+		p.drawLine(xs*xl/2, 2*ys*i-5, xs*xl/2, ys*(2*i+1)-5);
+		p.drawLine(xs*i+5, ys*(yl-1), xs*(2*i+1)/2+5, ys*(yl-1));
+		}
+		p.setColor(Color.black);
+		int[][][] pts = new int[xl][yl][2];
+		for(int j=0;j<yl;j++){
+		for(int i=0;i<xl-1;i+=2){
+				pts[i][j][0] = i*xs;
+				pts[i][j][1] = (2*j+1)*ys;
+				pts[i+1][j][0] = (i+1)*xs;
+				pts[i+1][j][1] = 2*j*ys;
+				p.fillRect(pts[i][j][0], pts[i][j][1], 1, 1);
+				p.fillRect(pts[i+1][j][0], pts[i+1][j][1], 1, 1);
+			}
+		}
+		int[][][] line = {{{0,-2},{0,0},{2,1}},
+							{{-2,1},{0,0}},
+							{{-1,2},{0,1},{1,2}},
+							{{-2,0},{-1,0},{-1,-1}}};
+		for(int l=0;l<line.length;l++)
+			for(int pt=0;pt<line[l].length-1;pt++)
+				p.drawLine(xs*xl/2+xs*line[l][pt][0], ys*(yl-1)+(line[l][pt][0]%2==0?0:ys)-2*ys*line[l][pt][1], xs*xl/2+xs*line[l][pt+1][0], ys*(yl-1)+(line[l][pt+1][0]%2==0?0:ys)-2*ys*line[l][pt+1][1]);
+	}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}

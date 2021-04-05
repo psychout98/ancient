@@ -1,0 +1,258 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+public class solid extends JFrame implements KeyListener, ActionListener,
+		MouseWheelListener, MouseListener, MouseMotionListener {
+	double obj[][][];
+	JPanel panel;
+	double angleH = 0, angleV = 0,curH,curV;
+	double dx = 62.8/64;
+	int curX, curY, iX, iY,
+			xMoved, yMoved, cur, cur2;
+	boolean dragging = false, up = false,
+			down = false, left = false, right = false;
+	double zoom = 1;
+	SpinnerModel zeros[] = new SpinnerNumberModel[21],
+			spins[] = new SpinnerNumberModel[21];
+	JSpinner X1, Y1, Z1, X2, Y2, Z2, X, Y, Z, eX, eY, eZ, eX1, eY1, eZ1, eX2,
+			eY2, eZ2, epX[] = new JSpinner[4], epY[] = new JSpinner[4],
+			epZ[] = new JSpinner[4], pX[] = new JSpinner[4],
+			pY[] = new JSpinner[4], pZ[] = new JSpinner[4], r = new JSpinner(),
+			g = new JSpinner(), b = new JSpinner();
+	JMenuItem line, point, plane, getfile, savefile, showManager, saveAs,
+			newfile;
+	JCheckBoxMenuItem xGrid, yGrid, zGrid;
+	JRadioButtonMenuItem showAxis;
+	JButton control = new JButton(),flip = new JButton(), createP, createL, createPL, cancel,
+			points[], lines[], planes[], deleteP, cancelP, deleteL, Lcancel,
+			PLcancel, deletePL, changePLcolor, colorCancel;
+	JScrollPane p = new JScrollPane();
+	String filename;
+	Color curColor = new Color(100, 100, 100);
+
+	solid() throws InterruptedException, FileNotFoundException {
+		super("3D Model");
+		this.setSize(800, 800);
+		this.setLocationRelativeTo(null);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(3);
+		obj = new double[3][(int)(62.8/dx)][3];
+		for(double i=-31.4;i<=31.4;i+=dx){
+			int n = (int)((i+31.4)/dx);
+			for(int a=0;a<obj.length;a++)
+			obj[a][n][0] = i;
+			
+			obj[0][n][1] = 10*Math.sin(i/10)-10*Math.sin(i/10);
+			obj[0][n][2] = 0;
+			
+			obj[1][n][1] = 10*Math.sin(i/10)+10*Math.sin(i/10);
+			obj[1][n][2] = 0;
+			
+			obj[2][n][1] = 10*Math.sin(i/10);
+			obj[2][n][2] = Math.sqrt(3)*10*Math.abs(Math.sin(i/10));
+		}
+		
+		panel = new cube();
+		this.addKeyListener(this);
+		this.addMouseWheelListener(this);
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+		this.setLayout(null);
+		this.add(panel);
+		panel.setSize(this.getWidth(), this.getHeight());
+		panel.setLocation(0, 0);
+		this.setVisible(true);
+		while (true) {
+			panel.setSize(this.getWidth(), this.getHeight());
+			if (up)
+				angleV+=Math.PI/180;
+			if (down)
+				angleV-=Math.PI/180;
+			if (left)
+				angleH-=Math.PI/180;
+			if (right)
+				angleH+=Math.PI/180;
+			if (angleH > 2*Math.PI)
+				angleH = Math.PI/180;
+			if (angleH < 0)
+				angleH = 359*Math.PI/180;
+			Thread.sleep(42);
+			repaint();
+		}
+	}
+
+	public static void main(String[] args) throws InterruptedException,
+			FileNotFoundException {
+		solid window = new solid();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+			
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+
+	}
+
+	public class cube extends JPanel {
+
+		public void paint(Graphics p) {
+			double center = (this.getWidth() / 2) + xMoved, center2 = (this
+					.getHeight() / 2) + yMoved;
+			
+			for(int a=0;a<0;a++) //obj.length
+			for(int i=0;i<obj[a].length-1;i++)
+			p.drawLine((int) (center + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],true))),
+					(int) (center2 + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],false))),
+					(int) (center + (zoom * getXY(obj[a][i+1][0],obj[a][i+1][1],obj[a][i+1][2],true))),
+					(int) (center2 + (zoom * getXY(obj[a][i+1][0],obj[a][i+1][1],obj[a][i+1][2],false))));
+			
+			for(int i=0;i<obj[0].length;i++){
+				int objP[][][] = new int[obj[0].length][2][7];
+				for(int a=0;a<3;a++){
+				objP[i][0][a] = (int) (center + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],true)));
+				objP[i][1][a] = (int) (center2 + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],false)));
+				objP[i][0][a+3] = (int) (center + (zoom * getXY(obj[a][i+1][0],obj[a][i][1],obj[a][i][2],true)));
+				objP[i][1][a+3] = (int) (center2 + (zoom * getXY(obj[a][i+1][0],obj[a][i][1],obj[a][i][2],false)));
+				}
+				objP[i][0][6] = (int) (center2 + (zoom * getXY(obj[0][i][0]+dx/2,obj[0][i][1],obj[0][i][2]/3,true)));
+				objP[i][1][6] = (int) (center2 + (zoom * getXY(obj[0][i][0]+dx/2,obj[0][i][1],obj[0][i][2]/3,false)));
+				int[] pts[] = new int[2][27],ppt = {0,1,0,2,0,3,5,2,5,3,5,4,2,1,4,1,4,3};
+				for(int a=0;a<54;a++)
+					pts[a<27?0:1][a<27?a:a-27] = objP[i][a<27?0:1][a%3==0?6:ppt[(a-1)%3==0?((a<27?a:a-27)-1)/3:((a<27?a:a-27)-2)/3]];				
+				p.setColor(new Color(i%2==0?200:100,i%2==0?200:100,i%2==0?200:100));
+				p.fillPolygon(objP[i][0], objP[i][1], 3);
+			}		
+			
+			
+	
+
+		}
+	}
+
+	public int getXY(double x, double y, double z, boolean XY) {
+		x += .0001;
+		y += .0001;
+		z += .0001;
+		x *= 10;
+		y *= 10;
+		z *= -10;
+		
+		double rxy = Math.sqrt((x*x)+(y*y)),
+				rxz = Math.sqrt((x*x)+(z*z)),
+				Hpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(y/rxy),
+				Vpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(z/rxz);
+		double Y = ((z * Math.sin(angleV + (Math.PI / 2))) + (rxy * Math.sin(angleV) * Math.cos(angleH + Hpt)));
+		double X = ((y * Math.sin(angleH + (Math.PI / 2))) + (rxz * Math.sin(angleH) * Math.cos(angleV + Vpt)));
+		X = (rxy * Math.sin(angleH + Hpt));
+		return XY ?(int) X : (int) Y;
+	}
+
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent arg0) {
+		if (arg0.getWheelRotation() < 0)
+			zoom *= 1.1;
+		if (arg0.getWheelRotation() > 0)
+			zoom *= .9;
+
+	}
+
+	public double getDepth(double X, double Y, double Z) {
+		double x = getXY(X, Y, Z, true), y = getXY(X, Y, Z, false);
+		int front = (angleH < 361 && angleH > 179 ? 1 : -1);
+		X *= 10;
+		Y *= 10;
+		Z *= 10;
+		X += .000001;
+		Y += .000001;
+		Z += .000001;
+		int q = X > 0 ? 1 : -1;
+		double c = Math.sqrt(Math.pow(X, 2) + Math.pow(Y, 2) + Math.pow(Z, 2)), b = Math
+				.sqrt(Math.pow(x, 2) + Math.pow(y, 2)), depth = (Math.sqrt(Math
+				.pow(c, 2) - Math.pow(b, 2)) / 10)
+				* front * q;
+		return depth;
+
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		iX = arg0.getPoint().x;
+		iY = arg0.getPoint().y;
+		dragging = true;
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		curH = angleH;
+		curV = angleV;
+		dragging = false;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		curX = e.getPoint().x;
+		curY = e.getPoint().y;
+		if (dragging) {
+			int Dx = curX - iX, Dy = curY - iY;
+			angleH = ((double) Math.PI * (Dx) / 720) + curH;
+			angleV = ((double) Math.PI * (Dy) / 720) + curV;
+		}
+		if(angleV < 0){
+			angleV = 1439*Math.PI/720;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleV > 2*Math.PI){
+			angleV = 0;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleH < 0){
+			angleH = 1439*Math.PI/720;
+			iX=curX;
+			curH = angleH;
+		}
+		if(angleH > 2*Math.PI){
+			angleH = 0;
+			iX=curX;
+			curH = angleH;
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+}

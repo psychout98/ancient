@@ -1,0 +1,85 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Random;
+
+import javax.swing.*;
+public class GUIgame extends JFrame implements KeyListener{
+	Random rand = new Random();
+	JPanel clock;
+	int xplayer=250;
+	int xshot,yshot=490;
+	static boolean shot = false;
+	GUIgame() throws InterruptedException{
+		super("GUI game");
+		init();
+		this.setSize(600,600);
+		this.setVisible(true);
+		this.add(clock);
+		this.addKeyListener(this);
+		while(true){
+			if(shot){
+		yshot--;
+			}
+			if(yshot<0){
+				yshot=490;
+				shot=false;
+			}
+
+			Thread.sleep(1);
+		repaint();
+		}	
+		}
+	
+	
+	public void init(){
+		clock = new Clockpanel();
+	}
+	public static void main(String[]args) throws InterruptedException{
+		GUIgame window=new GUIgame();
+		window.setDefaultCloseOperation(3);
+	}
+	private class Clockpanel extends JPanel{
+		public void paintComponent(Graphics p){
+			p.setColor(Color.BLACK);
+			p.fillRect(0, 0, 600, 600);
+			p.setColor(Color.BLUE);
+			p.fillRect(xplayer, 500, 10, 10);
+			if(shot){
+				xshot=xplayer;
+				p.setColor(Color.RED);
+				p.fillRect(xshot, yshot, 10, 20);
+			}
+		}
+	}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		if(arg0.getKeyCode()==KeyEvent.VK_LEFT){
+			xplayer=xplayer-2;
+		}
+		if(arg0.getKeyCode()==KeyEvent.VK_RIGHT){
+			xplayer=xplayer+2;
+		}
+		if(arg0.getKeyCode()==KeyEvent.VK_SPACE){
+			yshot=490;
+			shot=true;
+		}
+		
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+}

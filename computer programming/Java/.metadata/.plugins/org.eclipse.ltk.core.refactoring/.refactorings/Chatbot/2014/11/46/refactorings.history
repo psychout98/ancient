@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Chatbot/Arrays.rtf&apos; to &apos;Arrays.txt&apos;" description="Rename resource &apos;Arrays.rtf&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Arrays.rtf" name="Arrays.txt" stamp="1415756349704" updateReferences="true"/>
+</session>

@@ -1,0 +1,33 @@
+import java.util.Scanner;
+
+
+public class WhileLoops {
+
+	public static void main(String[] args) throws InterruptedException{
+		Scanner scan = new Scanner(System.in);
+		String num="1";
+		while(Integer.parseInt(num)>=1){
+		if((Integer.parseInt(num)+1)%5==1){
+			int num2=Integer.parseInt(num)+2;
+			num=scan.nextLine();
+			if(num=="buzz"){
+				System.out.println(num2);
+			}
+			else{
+				System.out.println("You Lose");
+			}
+		}
+			else{
+			num=scan.nextLine();
+			if(Integer.parseInt(num)%5==1){
+				System.out.println("Buzz");
+			}
+			else{
+			System.out.println(num+1);
+			}
+		}
+//			num ++;
+//			Thread.sleep(50);
+		}
+	}
+}

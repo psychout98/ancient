@@ -1,0 +1,52 @@
+import java.util.*;
+
+public class Poker {
+	static String card[][] = new String[13][4], a[] = { "Ace", "2", "3", "4",
+			"5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" }, b[] = {
+			" of Spades", " of Clubs", " of Diamonds", " of Hearts" },
+			hand[] = new String[5];
+
+	static boolean Card[][] = new boolean[13][4], pair=false,twopair=false;
+
+	public static void main(String[] args) throws InterruptedException{
+		Random rand = new Random();
+		for (int i = 0; i < 13; i++)
+			for (int j = 0; j < 4; j++)
+				card[i][j] = a[i] + b[j];
+		for (int i = 0; i < 5; i++) {
+			hand[i] = card[rand.nextInt(13)][rand.nextInt(4)];
+			for (int j = 0; j < 13; j++)
+				for (int k = 0; k < 4; k++)
+					if (hand[i] == card[j][k])
+						Card[j][k] = false;
+			if (i > 0)
+				for (int j = 0; j < i; j++)
+					if (hand[i] == hand[j])
+						i--;
+		}
+		System.out.println(hand[0] + "\n" + hand[1] + "\n" + hand[2] + "\n"
+				+ hand[3] + "\n" + hand[4]);
+		for (int i = 1; i < 5; i++) {
+				for (int k = 0; k < 13; k++) {
+					for (int j = 0; j < i; j++) {
+					if(hand[i].contains(a[k])&&hand[j].contains(a[k])&&pair){
+						twopair=true;
+						pair=false;
+						break;
+					}
+					if(hand[i].contains(a[k])&&hand[j].contains(a[k])){
+						pair=true;
+						break;
+					}
+					}
+			}
+		}
+		if(pair)
+			System.out.println("Pair");
+		if(twopair)
+			System.out.println("Two pair");
+	}
+
+	
+
+}

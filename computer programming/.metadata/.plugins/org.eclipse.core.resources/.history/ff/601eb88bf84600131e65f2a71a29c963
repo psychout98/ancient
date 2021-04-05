@@ -1,0 +1,65 @@
+import java.awt.AWTException;
+import java.awt.BorderLayout;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class samsint extends JFrame implements ActionListener{
+	JButton button;
+	static boolean a = false;
+	samsint(){
+		JPanel panel = new JPanel();
+		button = new JButton("Push me");
+		button.addActionListener(this);
+		panel.add(button);
+		this.add(panel, BorderLayout.CENTER);
+		this.setSize(300,300);
+		this.setVisible(true);
+	}
+	public static void main(String[] args) throws InterruptedException,
+			AWTException, IOException {
+		samsint window = new samsint();
+		Random randomizer = new Random();
+		Robot r = new Robot();
+		Thread.sleep(5000);
+		boolean b = true;
+		boolean c = true;
+		while(c){
+		if(a=true){
+			Runtime.getRuntime().exec("notepad");
+			//while(b){
+				for(int i=0;i<1000;i++){
+				if(randomizer.nextInt(2) == 0){
+				r.keyPress(KeyEvent.VK_1);
+				Thread.sleep(50);
+				}
+				if(randomizer.nextInt(2) == 1){
+				r.keyPress(KeyEvent.VK_0);
+				Thread.sleep(50);
+				}
+			}
+			
+		}
+		if(a=false){
+			c = true;
+			Thread.sleep(50);
+			window.setVisible(false);
+		}
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		if(arg0.getSource() == button){
+			a=true;
+		}
+	}
+}

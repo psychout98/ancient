@@ -1,0 +1,317 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+public class solid extends JFrame implements KeyListener, ActionListener,
+		MouseWheelListener, MouseListener, MouseMotionListener {
+	double obj[][][];
+	JPanel panel, tpan,pan2 = new JPanel(new GridLayout(2,2)),pan3 = new JPanel();
+	double angleH = Math.PI/2, angleV = Math.PI/2,curH = Math.PI/2,curV = Math.PI/2;
+	double range = 10;
+	int curX, curY, iX, iY,
+			xMoved, yMoved, cur, cur2;
+	double resol=.25;
+	boolean dragging = false, up = false,
+			down = false, left = false, right = false,printshit = false;
+	double zoom = .7;
+	SpinnerModel resols = new SpinnerNumberModel(10,4,500,1);
+	JSpinner rez;
+	JTextPane[][] fxs = new JTextPane[100][2];
+	JLabel[] eq = new JLabel[200];
+	JButton addLine;
+	JScrollPane flist = new JScrollPane(pan2,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+	solid() throws InterruptedException, FileNotFoundException {
+		super("3D Model");
+		this.setSize(800, 800);
+		this.setLocationRelativeTo(null);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(3);
+		panel = new cube();
+		tpan = new JPanel(new BorderLayout());
+		this.addKeyListener(this);
+		this.addMouseWheelListener(this);
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+		this.setLayout(new BorderLayout());
+		fxs[0][0] = new JTextPane();
+		fxs[0][1] = new JTextPane();
+		fxs[0][0].addKeyListener(this);
+		fxs[0][1].addKeyListener(this);
+		fxs[0][0].setText("(x^2-4)/(3*x)");
+		fxs[0][1].setText("0");
+		eq[0] = new JLabel("y = ");
+		eq[1] = new JLabel("z = ");
+		addLine = new JButton("New Function");
+		addLine.addActionListener(this);
+		pan2.add(eq[0]);
+		pan2.add(fxs[0][0]);
+		pan2.add(eq[1]);
+		pan2.add(fxs[0][1]);
+		pan3.add(addLine);
+		rez = new JSpinner(resols);
+		pan3.add(rez);
+		tpan.add(pan3,BorderLayout.WEST);
+		tpan.add(flist, BorderLayout.CENTER);
+		this.add(tpan, BorderLayout.NORTH);
+		this.add(panel, BorderLayout.CENTER);
+		panel.setSize(this.getWidth(), this.getHeight()-200);
+		this.setVisible(true);
+		obj = new double[3][3][(int) ((2*range)/resol)+1];
+		for(double x=-range;x<=range;x+=resol){
+			for(int i=0;i<obj.length;i++)
+			obj[i][0][(int)((x+range)/resol)] = x;
+			obj[0][1][(int)((x+range)/resol)] = x<=3.2?-Math.sqrt(1700-(x*x)):((x*x)-400)/(3*x);
+			obj[0][2][(int)((x+range)/resol)] = 0;
+			obj[1][1][(int)((x+range)/resol)] = x<=-3.2?((x*x)-400)/(3*x):Math.sqrt(1700-(x*x));
+			obj[1][2][(int)((x+range)/resol)] = 0;
+			double c1 = (obj[1][1][(int)((x+range)/resol)]),c2=(obj[0][1][(int)((x+range)/resol)]);
+			obj[2][1][(int)((x+range)/resol)] = c1-(c1-c2)*Math.cos(Math.PI*(x+10)/40)/2;
+			obj[2][2][(int)((x+range)/resol)] = (c1-c2)*Math.sin(Math.PI*(x+10)/40)/2;
+	//		obj[0][1][x+range] = equate(fxs[0][0].getText(),x);
+	//		obj[0][2][x+range] = equate(fxs[0][1].getText(),x);
+		}
+		int butthole = 0;
+		while (true) {
+			panel.setSize(this.getWidth(), this.getHeight());
+			if (up)
+				angleV+=Math.PI/180;
+			if (down)
+				angleV-=Math.PI/180;
+			if (left)
+				angleH-=Math.PI/180;
+			if (right)
+				angleH+=Math.PI/180;
+			if (angleH > 2*Math.PI)
+				angleH = Math.PI/180;
+			if (angleH < 0)
+				angleH = 359*Math.PI/180;
+			Thread.sleep(42);
+			repaint();
+		//	butthole++;
+			if(butthole>50)
+				printshit=true;
+		}
+	}
+	
+	public double equate(String equation, double x){
+		return 1;
+	}
+
+	public static void main(String[] args) throws InterruptedException,
+			FileNotFoundException {
+		solid window = new solid();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+			
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+
+	}
+
+	public class cube extends JPanel {
+
+		public void paint(Graphics p) {
+			double center = (this.getWidth() / 2) + xMoved, center2 = (this
+					.getHeight() / 2) + yMoved;
+			p.setColor(Color.white);
+			p.fillRect(0,0,(int)center*2, (int)center2*2);
+			p.setColor(Color.black);
+			for(int a=0;a<obj.length;a++) 
+				for(int i=0;i<obj[a][0].length-1;i++)
+				p.drawLine((int) (center + (zoom * getXY(obj[a][0][i],obj[a][1][i],obj[a][2][i],true))),
+						(int) (center2 + (zoom * getXY(obj[a][0][i],obj[a][1][i],obj[a][2][i],false))),
+						(int) (center + (zoom * getXY(obj[a][0][i+1],obj[a][1][i+1],obj[a][2][i+1],true))),
+						(int) (center2 + (zoom * getXY(obj[a][0][i+1],obj[a][1][i+1],obj[a][2][i+1],false))));
+			int[][][] pgn = new int[obj[0][0].length][2][3];
+			for(int a=0;a<obj.length;a++){
+				for(int i=0;i<obj[a][0].length-1;i++){
+				pgn[i][0][a] = (int) (center + (zoom * getXY(obj[a][0][i],obj[a][1][i],obj[a][2][i],true)));
+				pgn[i][1][a] = (int) (center2 + (zoom * getXY(obj[a][0][i],obj[a][1][i],obj[a][2][i],false)));
+				}
+				}
+			String crosses = "Depth = 4 units for all cross sections";
+			for(int i=0;i<obj[0][0].length;i++){
+				crosses+="\n\nTriangle "+(i)+"(x="+(i-80)/2+"):"+
+						"\nBase Length: "+(Math.abs(obj[0][1][i]-obj[1][1][i]))/4.126+
+						"\nSide 1 Length: "+(Math.sqrt(Math.pow(obj[0][1][i]-obj[2][1][i],2)+Math.pow(obj[2][2][i],2)))/4.126+
+						"\nSide 2 Length: "+(Math.sqrt(Math.pow(obj[1][1][i]-obj[2][1][i],2)+Math.pow(obj[2][2][i],2)))/4.126+
+						"\nArea of section: "+(Math.abs((obj[0][1][i]-obj[1][1][i])*obj[2][2][i])/2)/4.126+
+						"\nVolume of section: "+(Math.abs((obj[0][1][i]-obj[1][1][i])*obj[2][2][i])/2)/2;
+			}
+			if(printshit){
+			System.out.println(crosses);
+			System.exit(0);
+			}
+			for(int i=0;i<pgn.length;i++){
+				p.setColor(new Color(i%2==0?200:100,i%2==0?200:100,i%2==0?200:100));
+				p.fillPolygon(pgn[i][0], pgn[i][1], 3);
+				p.setColor(Color.black);
+				p.drawPolygon(pgn[i][0],pgn[i][1],3);
+			}
+			/*
+			for(int a=0;a<obj.length;a++) 
+			for(int i=0;i<obj[a].length-1;i++)
+			p.drawLine((int) (center + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],true))),
+					(int) (center2 + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],false))),
+					(int) (center + (zoom * getXY(obj[a][i+1][0],obj[a][i+1][1],obj[a][i+1][2],true))),
+					(int) (center2 + (zoom * getXY(obj[a][i+1][0],obj[a][i+1][1],obj[a][i+1][2],false))));
+			
+			for(int i=0;i<obj[0].length-1;i++){
+				int objP[][][] = new int[obj[0].length][2][7];
+				for(int a=0;a<3;a++){
+				objP[i][0][a] = (int) (center + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],true)));
+				objP[i][1][a] = (int) (center2 + (zoom * getXY(obj[a][i][0],obj[a][i][1],obj[a][i][2],false)));
+				objP[i][0][a+3] = (int) (center + (zoom * getXY(obj[a][i+1][0],obj[a][i][1],obj[a][i][2],true)));
+				objP[i][1][a+3] = (int) (center2 + (zoom * getXY(obj[a][i+1][0],obj[a][i][1],obj[a][i][2],false)));
+				}
+				objP[i][0][6] = (int) (center + (zoom * getXY(obj[0][i][0]+range/(2*resol),obj[0][i][1],obj[0][i][2]/3,true)));
+				objP[i][1][6] = (int) (center2 + (zoom * getXY(obj[0][i][0]+range/(2*resol),obj[0][i][1],obj[0][i][2]/3,false)));
+				int[] ppt = {6,0,1,6,0,2,6,0,3,6,5,2,6,5,3,6,5,4,6,2,1,6,4,1,6,4,3};
+				for(int a=0;a<9;a++){
+				int[][] pts = new int[2][3];
+				for(int b=0;b<3;b++){
+					pts[0][b] = objP[i][0][ppt[a*3+b]];
+					pts[1][b] = objP[i][1][ppt[a*3+b]];
+				}
+				p.setColor(new Color(i%2==0?200:100,i%2==0?200:100,i%2==0?200:100));
+				p.fillPolygon(pts[0], pts[1], 3);
+				}
+				}
+				*/
+			
+			
+	
+
+		}
+	}
+
+	public int getXY(double x, double y, double z, boolean XY) {
+		x += .0001;
+		y += .0001;
+		z += .0001;
+		x *= 10;
+		y *= 10;
+		z *= -10;
+		
+		double rxy = Math.sqrt((x*x)+(y*y)),
+				rxz = Math.sqrt((x*x)+(z*z)),
+				Hpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(y/rxy),
+				Vpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(z/rxz);
+		double Y = ((z * Math.sin(angleV + (Math.PI / 2))) + (rxy * Math.sin(angleV) * Math.cos(angleH + Hpt)));
+		double X = ((y * Math.sin(angleH + (Math.PI / 2))) + (rxz * Math.sin(angleH) * Math.cos(angleV + Vpt)));
+		X = (rxy * Math.sin(angleH + Hpt));
+		return XY ?(int) X : (int) Y;
+	}
+
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent arg0) {
+		if (arg0.getWheelRotation() < 0)
+			zoom *= 1.1;
+		if (arg0.getWheelRotation() > 0)
+			zoom *= .9;
+
+	}
+
+	public double getDepth(double X, double Y, double Z) {
+		double x = getXY(X, Y, Z, true), y = getXY(X, Y, Z, false);
+		int front = (angleH < 361 && angleH > 179 ? 1 : -1);
+		X *= 10;
+		Y *= 10;
+		Z *= 10;
+		X += .000001;
+		Y += .000001;
+		Z += .000001;
+		int q = X > 0 ? 1 : -1;
+		double c = Math.sqrt(Math.pow(X, 2) + Math.pow(Y, 2) + Math.pow(Z, 2)), b = Math
+				.sqrt(Math.pow(x, 2) + Math.pow(y, 2)), depth = (Math.sqrt(Math
+				.pow(c, 2) - Math.pow(b, 2)) / 10)
+				* front * q;
+		return depth;
+
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		iX = arg0.getPoint().x;
+		iY = arg0.getPoint().y;
+		dragging = true;
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		curH = angleH;
+		curV = angleV;
+		dragging = false;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		curX = e.getPoint().x;
+		curY = e.getPoint().y;
+		if (dragging) {
+			int Dx = curX - iX, Dy = curY - iY;
+			angleH = ((double) Math.PI * (Dx) / 720) + curH;
+			angleV = ((double) Math.PI * (Dy) / 720) + curV;
+		}
+		if(angleV < 0){
+			angleV = 1439*Math.PI/720;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleV > 2*Math.PI){
+			angleV = 0;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleH < 0){
+			angleH = 1439*Math.PI/720;
+			iX=curX;
+			curH = angleH;
+		}
+		if(angleH > 2*Math.PI){
+			angleH = 0;
+			iX=curX;
+			curH = angleH;
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+}

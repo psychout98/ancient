@@ -1,0 +1,27 @@
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.util.Random;
+
+public class samsint{
+	public static void main(String[] args) throws InterruptedException, AWTException{
+		Random randomizer = new Random();
+		Robot r = new Robot();
+		Thread.sleep(5000);
+		for(int i=100;i>0;i--){
+			i=i-1;
+		if(randomizer.nextInt(3) == 1){
+			r.keyPress(KeyEvent.VK_1);
+		}
+		if(randomizer.nextInt(3) == 0){
+			r.keyPress(KeyEvent.VK_0);
+		}
+		else{
+			r.keyPress(KeyEvent.VK_SPACE);
+		}
+		
+		Thread.sleep(i/(i*10)); 
+		}}}
+		
+	
+

@@ -1,0 +1,172 @@
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+
+public class MagpieRunner2 extends JFrame implements ActionListener,
+
+KeyListener {
+
+	static JTextPane Statement, Response;
+	static boolean go = false, responded = false;
+	static String keyword, response, keywords[], responses[], arrayList = "",
+	words[], definitions[], Words[];
+
+	static File File = new File("Arrays.txt"), File2 = new File("Words.txt");
+
+	MagpieRunner2() {
+		super("Chatbot");
+		this.setSize(500, 100);
+		this.setVisible(true);
+		this.setResizable(false);
+		this.setLocation(500, 200);
+		this.setLayout(new GridLayout(1, 1));
+		this.setDefaultCloseOperation(3);
+		init();
+	}
+
+	public void init() {
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		Statement = new JTextPane();
+		Statement.setEditable(true);
+		Statement.addKeyListener(this);
+		Statement.setBorder(BorderFactory.createLineBorder(Color.black));
+		Response = new JTextPane();
+		Response.setEditable(false);
+		Response.setBorder(BorderFactory.createLineBorder(Color.black));
+		panel.add(Response);
+		panel.add(Statement);
+		this.add(panel);
+	}
+
+	public static void read(String statement) {
+		splitWords(statement);
+		if (!understood(statement))
+			reread(statement);
+	}
+
+	public static void splitWords(String statement) {
+		int spaces = 0, space[];
+		for (int i = 0; i < statement.length(); i++)
+			if (statement.charAt(i) == ' ')
+				spaces++;
+		space = new int[spaces];
+		Words = new String[spaces + 1];
+		spaces = -1;
+		for (int i = 0; i < statement.length(); i++)
+			if (statement.charAt(i) == ' ') {
+				spaces++;
+				space[spaces] = i;
+			}
+		spaces++;
+		Words[0] = statement.substring(0, space[0]);
+		for (int i = 1; i < spaces; i++){
+		Words[i] = statement.substring(space[i - 1] + 1, space[i]);
+		}
+		if(statement.charAt(statement.length()-1) == '.' || statement.charAt(statement.length()-1) == '?' || statement.charAt(statement.length()-1) == '!')
+		Words[spaces] = statement.substring(space[spaces-1] + 1, statement.length()-1);
+		else
+		Words[spaces] = statement.substring(space[spaces-1] + 1);
+		for (int i = 0; i < spaces + 1; i++)
+			System.out.println(Words[i]);
+
+	}
+
+	public static boolean understood(String statement) {
+
+		return true;
+
+	}
+
+	public static void reread(String statement) {
+
+	}
+
+	public static void redefineWords() throws FileNotFoundException {
+		Scanner as1 = new Scanner(File2), as2 = new Scanner(File2);
+		int lines = 0, k = 0;
+		arrayList = "";
+		while (as1.hasNextLine()) {
+			arrayList += as1.nextLine() + "\n";
+			lines++;
+		}
+		words = new String[lines];
+		definitions = new String[lines];
+		for (int l = 0; l < lines; l++) {
+			String line = as2.nextLine();
+			for (int j = 0; j < line.length(); j++)
+				if (line.charAt(j) == ':')
+					k = j;
+			words[l] = line.substring(0, k);
+			definitions[l] = line.substring(k + 1);
+		}
+
+	}
+
+	public static void main(String[] args) throws InterruptedException,
+	IOException, AWTException {
+		MagpieRunner2 window = new MagpieRunner2();
+		Response.setText("Hello, lets talk.");
+		while (!Statement.getText().toLowerCase().equals("bye")) {
+			if (go) {
+				read(Statement.getText());
+				go = false;
+				responded = true;
+			}
+			Thread.sleep(100);
+		}
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (responded && e.getKeyCode() == e.getKeyCode()) {
+			Statement.setText("");
+			responded = false;
+		}
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		Robot r;
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			try {
+				r = new Robot();
+				r.keyPress(KeyEvent.VK_BACK_SPACE);
+			} catch (AWTException e1) {
+				e1.printStackTrace();
+			}
+			go = true;
+
+		}
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+	}
+
+}

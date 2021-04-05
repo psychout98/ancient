@@ -1,0 +1,10 @@
+import java.awt.*;
+import javax.swing.*;
+
+public class Logo extends JApplet{
+
+	public void paint(Graphics p){
+		setSize(600,600);
+		
+	}
+}

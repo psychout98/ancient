@@ -1,0 +1,1174 @@
+import java.awt.AWTException;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
+
+public class site extends JFrame implements ActionListener {
+
+	/*
+	 * method of putting custom items into page list Tune to user friendly
+	 */
+
+	JButton b[] = { new JButton("Add Custom RadioButton"),
+			new JButton("Add Custom Checkbox"),
+			new JButton("Add Custom Input Field"),
+			new JButton("Add Custom Section"), new JButton("Add Custom Label"),
+			new JButton("Edit field") }, finish;
+	ButtonGroup bgr[] = new ButtonGroup[0];
+	boolean sel[] = { false, false, false, false, false, false, false, false,
+			false, false, false, false, false, false, false, false, false,
+			false, false, false, false, false, false, false, false },
+			done = false;
+	String Name, standards[] = { "General User Info Label", "First Name Field",
+			"Last Name Field", "Employee Title Field", "Phone Extension Field",
+			"Start Date Field", "Cell Number Field", "Office Site Field",
+			"Desk Location Field", "General Access Information Label",
+			"Email Address Field", "Email Alias Field",
+			"Desired Username Field", "Desired Password Field",
+			"Specific Access Information Label", "Networked Drives Section",
+			"User Calendar Access Section",
+			"Other Employee Calendar Access Section",
+			"User to Other Email Section", "Other user to Email Section",
+			"Email Distribution Lists Section", "Shared Peripherals Section",
+			"APPLICATION ACCESS Section" }, sections[] = {
+			"Below user info section", "Inside drive access section",
+			"Below drive access section", "Inside application access section",
+			"Below application access section",
+			"Below special instructions section" };
+	String locats[] = new String[standards.length];
+	ArrayList secs = new ArrayList();
+	field[] CFS = new field[0];
+	int lat = -1;
+	JPanel panel = new JPanel(new GridLayout(36, 1)), panel3 = new JPanel(
+			new BorderLayout()), panel4 = new JPanel(new BorderLayout()),
+			panel5 = new JPanel(), panel6 = new JPanel(), panel2 = new JPanel(
+					new GridLayout(3, 1, 0, 20)), tpan = new JPanel(
+					new BorderLayout());
+	JPanel mfp[] = { new JPanel(new GridLayout(16, 2, 5, 5)),
+			new JPanel(new GridLayout(1, 1)), new JPanel(new GridLayout(1, 1)),
+			new JPanel(new BorderLayout()), new JPanel() };
+	Component c[] = { new JLabel("Provide general user information."),
+			new JLabel(), new JLabel("First Name: "), new JTextPane(),
+			new JLabel("Last Name: "), new JTextPane(),
+			new JLabel("Employee Title: "), new JTextPane(),
+			new JLabel("Phone Extension: "), new JTextPane(),
+			new JLabel("Start Date: "), new JTextPane(),
+			new JLabel("Cell Number: "), new JTextPane(),
+			new JLabel("Office Site:"), new JTextPane(),
+			new JLabel("Desk Location: "), new JTextPane(),
+			new JLabel("Provide general access information."), new JLabel(),
+			new JLabel("Email Address (will auto-populate): "),
+			new JTextPane(), new JLabel("Email Alias: "), new JTextPane(),
+			new JLabel("Desired Username: "), new JTextPane(),
+			new JLabel("Desired Password: "), new JTextPane(),
+			new JLabel("Provide specific access information."),
+			new JLabel("Set permissions to drives, resources, etc.") };
+	Component c2[] = {
+			new JLabel("DRIVE / RESOURCE ACCESS"),
+			new JLabel("Which networked drives should the user have access to?"),
+			new JLabel("Which calendars should the user have access to?"),
+			new JLabel(
+					"Should another employee have access to the new user's calendar?"),
+			new JLabel("Should the user have access to another user's email?"),
+			new JLabel(
+					"Should another employee have access to the new user's email?"),
+			new JLabel(
+					"Should the user be included in any of the following email distribution lists?"),
+			new JLabel(
+					"Which shared peripherals should the user have access to?") };
+	JPanel p3[] = { new JPanel(new GridLayout(1, 2)),
+			new JPanel(new GridLayout(1, 2)), new JPanel(new GridLayout(1, 2)),
+			new JPanel(new GridLayout(1, 2)), new JPanel(new GridLayout(1, 2)),
+			new JPanel(new GridLayout(1, 2)), new JPanel(new GridLayout(1, 2)),
+			new JPanel(new GridLayout(1, 2)) };
+	Font f = new Font("Times New Roman", Font.PLAIN, 24);
+	JRadioButton[] rbp1 = { new JRadioButton("General User Info Label"),
+			new JRadioButton("First Name Field"),
+			new JRadioButton("Last Name Field"),
+			new JRadioButton("Employee Title Field"),
+			new JRadioButton("Phone Extension Field"),
+			new JRadioButton("Start Date Field"),
+			new JRadioButton("Cell Number Field"),
+			new JRadioButton("Office Site Field"),
+			new JRadioButton("Desk Location Field"),
+			new JRadioButton("General Access Information Label"),
+			new JRadioButton("Email Address Field"),
+			new JRadioButton("Email Alias Field"),
+			new JRadioButton("Desired Username Field"),
+			new JRadioButton("Desired Password Field"),
+			new JRadioButton("Specific Access Information Label"),
+			new JRadioButton("DRIVE / RESOURCE ACCESS Section"),
+			new JRadioButton("Networked Drives Section"),
+			new JRadioButton("User Calendar Access Section"),
+			new JRadioButton("Other Employee Calendar Access Section"),
+			new JRadioButton("User to Other Email Section"),
+			new JRadioButton("Other User to Email Section"),
+			new JRadioButton("Email Distribution Lists Section"),
+			new JRadioButton("Shared Peripherals Section"),
+			new JRadioButton("APPLICATION ACCESS Section"),
+			new JRadioButton("Special Instructions Section") };
+
+	public site(String name) throws IOException, InterruptedException {
+		super("NetLogicDC Form Editor");
+		Name = name;
+		this.setResizable(false);
+		this.setSize(1250, 800);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(3);
+		init(name);
+		while (!done) {
+			for (int i = 0; i < c.length / 2; i++) {
+				if (rbp1[i].isSelected()) {
+					sel[i] = true;
+					c[i * 2].setVisible(true);
+					c[(i * 2) + 1].setVisible(true);
+				} else {
+					sel[i] = false;
+					c[i * 2].setVisible(false);
+					c[(i * 2) + 1].setVisible(false);
+				}
+			}
+			if (rbp1[15].isSelected()) {
+				sel[15] = true;
+				mfp[1].setVisible(true);
+			} else {
+				sel[15] = false;
+				mfp[1].setVisible(false);
+			}
+			for (int i = 16; i < 23; i++)
+				if (rbp1[i].isSelected()) {
+					sel[i] = true;
+					p3[i - 15].setVisible(true);
+				} else {
+					sel[i] = false;
+					p3[i - 15].setVisible(false);
+				}
+			if (rbp1[23].isSelected()) {
+				sel[23] = true;
+				mfp[2].setVisible(true);
+			} else {
+				sel[23] = false;
+				mfp[2].setVisible(false);
+			}
+			if (rbp1[24].isSelected()) {
+				sel[24] = true;
+				mfp[3].setVisible(true);
+			} else {
+				sel[24] = false;
+				mfp[3].setVisible(false);
+			}
+			for (int i = 0; i < sel.length - 2; i++) {
+				if (i != 15 || i != 23 || i != 24) {
+					if (sel[i + (i > 16 && i < 23 ? 1 : 0)])
+						locats[i] = standards[i];
+					else
+						locats[i] = "";
+				}
+			}
+			secs.remove(sections[1]);
+			if (sel[15])
+				secs.add(sections[1]);
+			secs.remove(sections[2]);
+			if (sel[15])
+				secs.add(sections[2]);
+			secs.remove(sections[3]);
+			if (sel[23])
+				secs.add(sections[3]);
+			secs.remove(sections[4]);
+			if (sel[23])
+				secs.add(sections[4]);
+			secs.remove(sections[5]);
+			if (sel[24])
+				secs.add(sections[5]);
+			validate();
+			Thread.sleep(500);
+		}
+		write();
+		System.exit(0);
+	}
+
+	public void init(String name) throws IOException {
+		panel3.setBackground(new Color(140, 202, 97));
+		panel3.setBorder(new EmptyBorder(20, 20, 20, 20));
+		panel4.setSize(600, 800);
+		JLabel[] l = { new JLabel("Editor"), new JLabel(), new JLabel(),
+				new JLabel(" " + name), new JLabel(), new JLabel() };
+		panel.add(l[0]);
+		panel.add(l[2]);
+		for (int i = 0; i < b.length; i++) {
+			panel.add(b[i]);
+			b[i].addActionListener(this);
+		}
+		for (int i = 0; i < rbp1.length; i++)
+			panel.add(rbp1[i]);
+		BufferedImage img = ImageIO.read(new File("logo-white.png"));
+		ImageIcon icon = new ImageIcon(img);
+		JLabel lbl = new JLabel(icon);
+		lbl.setForeground(new Color(123, 185, 80));
+		panel3.add(lbl, BorderLayout.WEST);
+		finish = new JButton("Finish Form");
+		finish.addActionListener(this);
+		panel3.add(finish, BorderLayout.EAST);
+		l[3].setFont(f);
+		l[3].setForeground(Color.white);
+		panel3.add(l[3], BorderLayout.SOUTH);
+		JScrollPane p = new JScrollPane(panel);
+		p.setPreferredSize(new Dimension(300, 800));
+		p.getVerticalScrollBar().setUnitIncrement(16);
+		panel5.add(p);
+		panel4.add(panel3, BorderLayout.NORTH);
+		panel2.setBackground(new Color(123, 185, 80));
+		panel2.setBorder(new EmptyBorder(20, 20, 20, 20));
+		JScrollPane p2 = new JScrollPane(tpan);
+		p2.setPreferredSize(new Dimension(600, 800));
+		p2.getVerticalScrollBar().setUnitIncrement(16);
+		panel4.add(p2, BorderLayout.CENTER);
+		this.add(panel5, BorderLayout.WEST);
+		this.add(panel4, BorderLayout.CENTER);
+		this.setVisible(true);
+		f = new Font("Ariel", Font.PLAIN, 14);
+		Panel2();
+	}
+
+	public void Panel2() {
+		panel2.removeAll();
+		panel2.setLayout(new GridLayout(3, 1, 0, 20));
+		mfp[0].removeAll();
+		mfp[1].removeAll();
+		mfp[2].removeAll();
+		mfp[3].removeAll();
+		mfp[4].removeAll();
+		mfp[0].setBackground(new Color(123, 185, 80));
+		mfp[0].setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		mfp[0].setLayout(new GridLayout(16, 2, 5, 5));
+		c[0].setFont(f);
+		mfp[0].add(c[0]);
+		mfp[0].add(c[1]);
+		acf(0, mfp[0]);
+		for (int i = 2; i < 18; i++) {
+			c[i].setFont(f);
+			mfp[0].add(c[i]);
+			if (i % 2 != 0)
+				acf(i / 2, mfp[0]);
+		}
+		c[18].setFont(f);
+		mfp[0].add(c[18]);
+		mfp[0].add(c[19]);
+		acf(9, mfp[0]);
+		for (int i = 20; i < 28; i++) {
+			c[i].setFont(f);
+			mfp[0].add(c[i]);
+			if (i % 2 != 0)
+				acf(i / 2, mfp[0]);
+		}
+		c[28].setFont(f);
+		c[29].setFont(f);
+		mfp[0].add(c[28]);
+		mfp[0].add(new JLabel());
+		mfp[0].add(c[29]);
+		mfp[0].add(new JLabel());
+		acf(14, mfp[0]);
+		mfp[1].setBackground(new Color(123, 185, 80));
+		mfp[1].setBorder(BorderFactory.createLineBorder(Color.gray));
+		mfp[1].setLayout(new GridLayout(p3.length, 1));
+		for (int i = 0; i < p3.length; i++) {
+			p3[i].removeAll();
+			p3[i].setLayout(new GridLayout(1, 2, 0, 3));
+			p3[i].setBorder(BorderFactory.createLineBorder(Color.gray));
+			p3[i].setBackground(new Color(123, 185, 80));
+			p3[i].add(c2[i]);
+			p3[i].add(new JLabel());
+			if (i > 0)
+				acf(14 + i, p3[i]);
+			mfp[1].add(p3[i]);
+		}
+		prw(1, mfp[1]);
+		mfp[2].setBackground(new Color(123, 185, 80));
+		mfp[2].setBorder(BorderFactory.createLineBorder(Color.gray));
+		mfp[2].setLayout(new GridLayout(1, 1));
+		mfp[4].setLayout(new GridLayout(1, 2));
+		mfp[4].setBackground(new Color(123, 185, 80));
+		JLabel appl = new JLabel("APPLICATION ACCESS");
+		appl.setFont(f);
+		mfp[4].add(appl);
+		mfp[4].add(new JLabel());
+		acf(22, mfp[4]);
+		mfp[2].add(mfp[4]);
+		prw(3, mfp[2]);
+		mfp[3].setBackground(new Color(123, 185, 80));
+		mfp[3].setBorder(BorderFactory.createLineBorder(Color.gray));
+		JLabel si = new JLabel("Special Instuctions");
+		si.setFont(f);
+		mfp[3].add(si, BorderLayout.NORTH);
+		JTextPane sp = new JTextPane();
+		mfp[3].add(sp, BorderLayout.CENTER);
+		tpan.add(mfp[0], BorderLayout.NORTH);
+		prw(0, panel2);
+		panel2.add(mfp[1]);
+		prw(2, panel2);
+		panel2.add(mfp[2]);
+		prw(4, panel2);
+		panel2.add(mfp[3]);
+		prw(5, panel2);
+		tpan.add(panel2, BorderLayout.CENTER);
+		validate();
+	}
+
+	public void prw(int loc, JPanel p) {
+		for (int i = 0; i < CFS.length; i++) {
+			if (CFS[i].Location == loc && CFS[i].Type == 3) {
+				CFS[i].p.removeAll();
+				CFS[i].p.setLayout(new GridLayout(1, 2));
+				CFS[i].p.add(CFS[i].Label);
+				CFS[i].p.add(new JLabel());
+				p.setLayout(new GridLayout(
+						Integer.parseInt(p
+								.getLayout()
+								.toString()
+								.substring(
+										p.getLayout().toString()
+												.indexOf("rows=") + 5,
+										p.getLayout().toString()
+												.indexOf("cols=") - 1)) + 1,
+						Integer.parseInt(p
+								.getLayout()
+								.toString()
+								.substring(
+										p.getLayout().toString()
+												.indexOf("cols=") + 5,
+										p.getLayout().toString().indexOf("]"))),
+						Integer.parseInt(p
+								.getLayout()
+								.toString()
+								.substring(
+										p.getLayout().toString()
+												.indexOf("hgap=") + 5,
+										p.getLayout().toString()
+												.indexOf("vgap=") - 1)),
+						Integer.parseInt(p
+								.getLayout()
+								.toString()
+								.substring(
+										p.getLayout().toString()
+												.indexOf("vgap=") + 5,
+										p.getLayout().toString()
+												.indexOf("rows=") - 1))));
+				acf(CFS[i].pan + 23, CFS[i].p);
+				p.add(CFS[i].p);
+			}
+		}
+	}
+
+	public void acf(int loc, JPanel p) {
+		for (int i = 0; i < CFS.length; i++) {
+			if (CFS[i].Location == loc) {
+				if (CFS[i].Type == 0) {
+					p.setLayout(new GridLayout(Integer
+							.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("rows=") + 5,
+											p.getLayout().toString()
+													.indexOf("cols=") - 1))
+							+ CFS[i].rb.length, Integer
+							.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("cols=") + 5,
+											p.getLayout().toString()
+													.indexOf("]"))), Integer
+							.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("hgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("vgap=") - 1)),
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("vgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("rows=") - 1))));
+					for (int j = 0; j < CFS[i].rb.length; j++) {
+						p.add(CFS[i].rb[j]);
+						p.add(new JLabel());
+					}
+				}
+				if (CFS[i].Type == 1) {
+					p.setLayout(new GridLayout(
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("rows=") + 5,
+											p.getLayout().toString()
+													.indexOf("cols=") - 1)) + 1,
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("cols=") + 5,
+											p.getLayout().toString()
+													.indexOf("]"))),
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("hgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("vgap=") - 1)),
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("vgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("rows=") - 1))));
+					p.add(CFS[i].cb);
+					p.add(new JLabel());
+				}
+				if (CFS[i].Type == 2) {
+					p.setLayout(new GridLayout(
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("rows=") + 5,
+											p.getLayout().toString()
+													.indexOf("cols=") - 1)) + 1,
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("cols=") + 5,
+											p.getLayout().toString()
+													.indexOf("]"))),
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("hgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("vgap=") - 1)),
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("vgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("rows=") - 1))));
+					p.add(CFS[i].Label);
+					p.add(CFS[i].t);
+				}
+				if (CFS[i].Type == 4) {
+					p.setLayout(new GridLayout(
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("rows=") + 5,
+											p.getLayout().toString()
+													.indexOf("cols=") - 1)) + 1,
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("cols=") + 5,
+											p.getLayout().toString()
+													.indexOf("]"))),
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("hgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("vgap=") - 1)),
+							Integer.parseInt(p
+									.getLayout()
+									.toString()
+									.substring(
+											p.getLayout().toString()
+													.indexOf("vgap=") + 5,
+											p.getLayout().toString()
+													.indexOf("rows=") - 1))));
+					p.add(CFS[i].Label);
+					p.add(CFS[i].l);
+				}
+			}
+		}
+	}
+
+	public String acc(int loc) {
+		String fc = "";
+		for (int i = 0; i < CFS.length; i++) {
+			if (CFS[i].Location == loc) {
+				if (CFS[i].Type == 0) {
+					for (int j = 0; j < CFS[i].rb.length; j++)
+						// fix userinfo thing
+						fc += "<input type=\\\"radio\\\"name=\\\"\"+"
+								+ CFS[i].rb[0].getText()
+								+ "\"\\\"value=\\\"\"+userinfo[0]+\"\\\">"
+								+ CFS[i].rb[j].getText() + "<br>";
+				}
+				if (CFS[i].Type == 1) {
+					fc += "<input type=\\\"checkbox\\\" value=\\\"\"+userinfo["
+							+ (23 - CFS.length + i) + "]+\">"
+							+ CFS[i].Label.getText();
+				}
+				if (CFS[i].Type == 2) {
+					fc += CFS[i].Label.getText()
+							+ "<input type=\\\"text\\\" value=\\\"\"+userinfo["
+							+ (23 - CFS.length + i) + "]+\"><br>";
+				}
+				if (CFS[i].Type == 4) {
+					fc += CFS[i].Label.getText();
+				}
+			}
+		}
+		return fc;
+	}
+
+	public String pcc(int loc) {
+		String fc = "";
+		for (int i = 0; i < CFS.length; i++) {
+			if (CFS[i].Location == loc && CFS[i].Type == 3) {
+				fc += "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>"
+						+ CFS[i].Label
+						+ "<br><br>"
+						+ acc(CFS[i].pan + 23)
+						+ "</div>";
+			}
+		}
+		return "";
+	}
+
+	public void write() throws IOException {
+		String[] customs = new String[CFS.length];
+		int[] cs = new int[CFS.length];
+		for (int i = 0; i < cs.length; i++) {
+			cs[i] = CFS[i].Location;
+		}
+		String form = "";
+
+		form += acc(0);
+
+		form += (sel[1] ? "First Name: <input type=\\\"text\\\" value=\\\"\"+userinfo[0]+\"\\\"><br><br>"
+				: "");
+		form += acc(1);
+		form += (sel[2] ? "Last Name: <input type=\\\"text\\\" value=\\\"\"+userinfo[1]+\"\\\"><br><br>"
+				: "");
+		form += acc(2);
+		form += (sel[3] ? "Employee Title: <input type=\\\"text\\\" value=\\\"\"+userinfo[2]+\"\\\"><br><br>"
+				: "");
+		form += acc(3);
+		form += (sel[4] ? "Phone Extension: <input type=\\\"text\\\" value=\\\"\"+userinfo[3]+\"\\\"><br><br>"
+				: "");
+		form += acc(4);
+		form += (sel[5] ? "Start Date: <input type=\\\"text\\\" value=\\\"\"+userinfo[4]+\"\\\"><br><br>"
+				: "");
+		form += acc(5);
+		form += (sel[6] ? "Cell Number: <input type=\\\"text\\\" value=\\\"\"+userinfo[5]+\"\\\"><br><br>"
+				: "");
+		form += acc(6);
+		form += (sel[7] ? "Office Site: <input type=\\\"text\\\" value=\\\"\"+userinfo[6]+\"\\\"><br><br>"
+				: "");
+		form += acc(7);
+		form += (sel[8] ? "Desk Location: <input type=\\\"text\\\" value=\\\"\"+userinfo[7]+\"\\\"><br><br>"
+				: "");
+		form += acc(8);
+		form += (sel[9] ? "Provide general Access Information." : "");
+		form += acc(9);
+		form += (sel[10] ? "Email Address (will auto populate): <input type=\\\"text\\\" value=\\\"\"+userinfo[3]+\"\\\"><br><br>"
+				: "");
+		form += acc(10);
+		form += (sel[11] ? "Email Alias: <input type=\\\"text\\\" value=\\\"\"+userinfo[8]+\"\\\"><br><br>"
+				: "");
+		form += acc(11);
+		form += (sel[12] ? "Desired Username: <input type=\\\"text\\\" value=\\\"\"+userinfo[9]+\"\\\"><br><br>"
+				: "");
+		form += acc(12);
+		form += (sel[13] ? "Desired Password: <input type=\\\"text\\\" value=\\\"\"+userinfo[10]+\"\\\"><br><br>"
+				: "");
+		form += acc(13);
+		form += pcc(0);
+		form += (sel[14] ? "Provide specific access information. Set permissions to drives, resources, etc.<br><br>"
+				: "");
+		form += acc(14);
+		form += (sel[15] ? "<div style=\\\"width:760px;border:1px solid gray;background:#6AA840;\\\">DRIVE / RESOURCE ACCESS<br>"
+				: "");
+		form += (sel[16] ? "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>Which networked drives should the user have access to?<br><br>"
+				+ acc(16) + "</div>"
+				: "");
+		form += (sel[17] ? "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>Which calendars should the user have access to?<br><br>"
+				+ acc(17) + "</div>"
+				: "");
+		form += (sel[18] ? "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>Should another employee have access to the new user's calendar?<br><br>"
+				+ acc(18) + "</div>"
+				: "");
+		form += (sel[19] ? "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>Should the user have access to another user's email?<br><br>"
+				+ acc(19) + "</div>"
+				: "");
+		form += (sel[20] ? "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>Should another employee have access to the new user's email?<br><br>"
+				+ acc(20) + "</div>"
+				: "");
+		form += (sel[21] ? "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>Should the user be included in any of the following email distribution lists?<br><br>"
+				+ acc(21) + "</div>"
+				: "");
+		form += (sel[22] ? "<div style=\\\"border:1px solid gray;width=760px;\\\"><br>Which shared peripherals should the user have access to?<br><br>"
+				+ acc(22) + "</div>"
+				: "");
+		form += pcc(2);
+		form += acc(15);
+		form += (sel[15] ? "</div><br><br>" + pcc(3) : "");
+		form += (sel[23] ? "<div style=\\\"width:760px;border:1px solid gray;background:#6AA840;\\\">APPLICATION ACCESS<br>"
+				+ pcc(3) + acc(23) + "</div><br><br>"
+				: "");
+		form += pcc(4);
+		form += (sel[24] ? "<div style=\\\"width:760px;border:1px solid gray;background:#6AA840;\\\">Special instructions<textarea name=\\\"specinstructs\\\" "
+				+ "style=\\\"margin:2;resize:none\\\" cols=\\\"105\\\" rows=\\\"10\\\">\"+userinfo[79]+\"</textarea>"
+				: "");
+		form += pcc(5);
+		String f = "<Html><Head><Title>"
+				+ Name
+				+ " - Netlogicdc</Title>"
+				+ "<link rel=\"shortcut icon\" type=\"image/x-icon\" "
+				+ "href=\"C:/Users/nheath/My Documents/Website/logo.png\" />"
+				+ "</Head><Body bgcolor=\"#8CCA61\" style=\"margin:50px\">"
+				+ "<a href=\"http://www.netlogicdc.com\">"
+				+ "<img src=\"C:/Users/nheath/My Documents/Website/logo-white.png\" style=\"width:240px;height:58px;\">"
+				+ "<br><br><br></a><div style=\"float:right;margin:10px 50px 0px 0px;width:35%\"><div style=\"float:right;\">"
+				+ "<font size=\"4\" color=\"white\" face=\"Ariel\">Search users:"
+				+ "</font><input onkeypress=\"gathertext(form)\" type=\"search\" name=\"searcher\"></div><br><br>"
+				+ "<font size=\"5\" color=\"white\" face=\"Ariel\">User List</font><br><br><div style=\"overflow:scroll;width:100%;"
+				+ "height:520px;border:1px solid gray;background:#7BB950;\"><a><a style=\"float:left;margin:10px\"><font size=\"4\""
+				+ " color=\"black\" face=\"Ariel\">Fake User</font></a><a style=\"float:right;margin:10px\"><input type=\"button\""
+				+ " onclick = \"showUser('fakeuser')\" name=\"fake-user\" value=\"View User Data\"></a></a></div></div><div style=\""
+				+ "float:left;width:54%;height:540px\"><font id=\"i1\" size=\"6\" color=\"white\" face=\"Ariel\">"
+				+ Name
+				+ "</font><br><br><a style=\"float:right;\"><input type=\"button\" value=\"New User\" onclick=\"showUser('new')\">"
+				+ "<input type=\"button\" onclick=\"makefile()\" value=\"Save User\"></a><br><br>"
+				+ "<form id=\"uform\" style=\"float:left;overflow:scroll;width:100%;height:520px;border:1px solid gray;background:#7BB950;\">"
+				+ "<div style=\"margin:10px\"><font  size=\"4\" color=\"black\" face=\"Ariel\">These documents serve as tools for adding and editing users "
+				+ "and allows netlogicdc technicians to set appropriate permissions for the new user. For security reasons, any new or revised documents must"
+				+ " be authorized by an authority at <a id=\"clientname\">"
+				+ Name
+				+ "</a> to be valid.</font></div></form></div><script>"
+				+ "function checkdoc(){}"
+				+ "function showUser(x){if(x==\"new\"){"
+				+ "userinfo=new Array(\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\");}else{var filename = x+\".txt\";"
+				+ "userinfo=new Array(\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\");}document.getElementById(\"uform\").innerHTML=\""
+				+ "<div style=\\\"margin:10px\\\"><font size=\\\"3\\\" color=\\\"black\\\" face=\\\"Helvetica\\\">"
+				+ (sel[0] ? "Provide general user information." : "")
+				+ "<input style=\\\"float:right;color:red;\\\" type=\\\"button\\\"onclick=\\\"memo()\\\"  value=\\\"X\\\"><br><br>"
+				+ form
+				+ "</font></div>\";}"
+				+ "function memo(){document.getElementById(\"uform\").innerHTML=\"<div style=\\\"margin:10px\\\">"
+				+ "<font  size=\\\"4\\\" color=\\\"black\\\" face=\\\"Ariel\\\">These documents serve as tools for"
+				+ " adding and editing users and allows netlogicdc \"+\"technicians to set appropriate permissions "
+				+ "for the new user. For security reasons, any new or revised documents must be \"+\"authorized by an"
+				+ " authority at <a id=\\\"clientname\\\">" + Name
+				+ "</a> to be valid.</font></div>\";}</script></Body></Html>";
+		JFileChooser fc = new JFileChooser();
+		fc.showSaveDialog(this);
+		File file = fc.getSelectedFile();
+		FileWriter fw = new FileWriter(file);
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(f);
+		bw.close();
+		File file2 = new File(file.getAbsolutePath() + ".html");
+		file.renameTo(file2);
+	}
+
+	public static void main(String[] args) throws IOException,
+			InterruptedException, AWTException {
+		String name = JOptionPane.showInputDialog("Client Name: ");
+		site window = new site(name);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == finish)
+			done = true;
+		for (int i = 0; i < 5; i++)
+			if (arg0.getSource() == b[i])
+				try {
+					new customField(i);
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+		if (arg0.getSource() == b[5])
+			new editFields();
+	}
+
+	public class editFields extends JFrame implements ActionListener,
+			KeyListener {
+
+		JComboBox cb, cb2, cb3, cb4;
+		JButton bts[] = { new JButton("Delete"), new JButton("Save") };
+		JTextPane tp = new JTextPane();
+		int num;
+		String[] mix, rbs;
+
+		public editFields() {
+			super("Edit a field");
+			this.setSize(500, 200);
+			this.setLocationRelativeTo(null);
+			this.setVisible(true);
+			this.setLayout(new GridLayout(5, 2));
+			mix = new String[CFS.length];
+			for (int i = 0; i < CFS.length; i++)
+				mix[i] = CFS[i].Label.getText()
+						+ (CFS[i].Type == 0 ? " radio button"
+								: (CFS[i].Type == 1 ? " check box"
+										: (CFS[i].Type == 2 ? " input field"
+												: (CFS[i].Type == 3 ? " section"
+														: " label"))));
+			cb = new JComboBox(mix);
+			cb3 = new JComboBox(locats);
+			cb4 = new JComboBox();
+			cb.addActionListener(this);
+			bts[0].addActionListener(this);
+			bts[1].addActionListener(this);
+			tp.setBorder(BorderFactory.createLineBorder(Color.black));
+			init2();
+		}
+		
+		public void init2(){
+			JLabel l[] = { new JLabel("Choose field: "),
+					new JLabel("Change Label: "),
+					new JLabel("Change Location"), new JLabel("Radiobutton:") };
+			this.add(l[0]);
+			this.add(cb);
+			this.add(l[3]);
+			this.add(cb4);
+			this.add(l[1]);
+			this.add(tp);
+			this.add(l[2]);
+			this.add(cb3);
+			this.add(bts[0]);
+			this.add(bts[1]);
+		}
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == cb) {
+				if (CFS[cb.getSelectedIndex()].Type == 0) {
+					cb = new JComboBox(mix);
+					cb3 = new JComboBox(locats);
+					rbs = new String[CFS[cb.getSelectedIndex()].rb.length];
+					for(int i=0;i<CFS[cb.getSelectedIndex()].rb.length;i++)
+						rbs[i] = CFS[cb.getSelectedIndex()].rb[i].getText();
+					cb4 = new JComboBox(rbs);
+					cb.addActionListener(this);
+					init2();
+					validate();
+				}
+				else if (CFS[cb.getSelectedIndex()].Type == 3) {
+					cb = new JComboBox(mix);
+					cb3 = new JComboBox(sections);
+					cb4 = new JComboBox();
+					cb.addActionListener(this);
+					init2();
+					validate();
+				}
+				else {
+					cb = new JComboBox(mix);
+					cb3 = new JComboBox(locats);
+					cb4 = new JComboBox();
+					cb.addActionListener(this);
+					init2();
+					validate();
+				}
+			}
+			if (e.getSource() == bts[0]) {
+				field ta[] = CFS;
+				CFS = new field[ta.length - 1];
+				for (int i = 0; i < CFS.length; i++)
+					CFS[i] = (i >= cb.getSelectedIndex() ? ta[i + 1] : ta[i]);
+				Panel2();
+				this.dispose();
+			}
+			if (e.getSource() == bts[1]) {
+				if (CFS[cb.getSelectedIndex()].Type == 0) {
+					CFS[cb.getSelectedIndex()].rb[num].setText(tp.getText());
+					CFS[cb.getSelectedIndex()].Location = cb3
+							.getSelectedIndex();
+				}
+				if (CFS[cb.getSelectedIndex()].Type == 1) {
+					CFS[cb.getSelectedIndex()].cb.setText(tp.getText());
+					CFS[cb.getSelectedIndex()].Location = cb3
+							.getSelectedIndex();
+				}
+				if (CFS[cb.getSelectedIndex()].Type >= 2) {
+					CFS[cb.getSelectedIndex()].Label.setText(tp.getText());
+					CFS[cb.getSelectedIndex()].Location = cb3
+							.getSelectedIndex();
+				}
+				Panel2();
+				this.dispose();
+			}
+
+		}
+
+	}
+
+	public class customField extends JFrame implements ActionListener,
+			KeyListener {
+
+		int Type;
+		String ts;
+		JComboBox cb = new JComboBox(locats);
+		JComboBox cr;
+		JLabel l[] = {
+				new JLabel("Location (Goes Below or inside of field): "),
+				new JLabel() };
+		JTextPane t = new JTextPane();
+		JButton add;
+
+		public customField(int type) throws InterruptedException {
+			super("Add new custom "
+					+ (type == 0 ? "radio button" : (type == 1 ? "check box"
+							: (type == 2 ? "input field"
+									: (type == 3 ? "section" : "label")))));
+			ts = (type == 0 ? "radio button" : (type == 1 ? "check box"
+					: (type == 2 ? "input field" : (type == 3 ? "section"
+							: "label"))));
+			Type = type;
+			this.setSize(500, 150);
+			this.setLocationRelativeTo(null);
+			if (type == 0)
+				rbn();
+			else if (type == 1)
+				cbx();
+			else if (type == 2)
+				inf();
+			else if (type == 3)
+				sec();
+			else
+				lab();
+			this.setVisible(true);
+		}
+
+		public void rbn() {
+			String s[] = new String[CFS.length + 1];
+			s[0] = "None";
+			for (int i = 0; i < CFS.length; i++)
+				if (CFS[i].Type == 0)
+					s[i + 1] = CFS[i].Label.getText();
+				else
+					s[i + 1] = "";
+			cr = new JComboBox(s);
+			this.setSize(500, 180);
+			this.setLayout(new GridLayout(4, 2, 3, 3));
+			l[1].setText("Radio Button Label: ");
+			t.setBorder(BorderFactory.createLineBorder(Color.black));
+			t.addKeyListener(this);
+			add = new JButton("Add Radio Button");
+			add.addActionListener(this);
+			this.add(l[0]);
+			this.add(cb);
+			this.add(l[1]);
+			this.add(t);
+			this.add(new JLabel("Connect to another radiobutton: "));
+			this.add(cr);
+			this.add(add);
+		}
+
+		public void cbx() {
+			this.setLayout(new GridLayout(3, 2, 3, 3));
+			l[1].setText("Check Box Label: ");
+			t.setBorder(BorderFactory.createLineBorder(Color.black));
+			t.addKeyListener(this);
+			add = new JButton("Add Check Box");
+			add.addActionListener(this);
+			this.add(l[0]);
+			this.add(cb);
+			this.add(l[1]);
+			this.add(t);
+			this.add(add);
+		}
+
+		public void inf() {
+			this.setLayout(new GridLayout(3, 2, 3, 3));
+			l[1].setText("Input Field Label: ");
+			t.setBorder(BorderFactory.createLineBorder(Color.black));
+			t.addKeyListener(this);
+			add = new JButton("Add Input Field");
+			add.addActionListener(this);
+			this.add(l[0]);
+			this.add(cb);
+			this.add(l[1]);
+			this.add(t);
+			this.add(add);
+		}
+
+		public void sec() {
+			cb = new JComboBox(sections);
+			this.setLayout(new GridLayout(3, 2, 3, 3));
+			l[1].setText("Section Label: ");
+			t.setBorder(BorderFactory.createLineBorder(Color.black));
+			t.addKeyListener(this);
+			add = new JButton("Add Section");
+			add.addActionListener(this);
+			this.add(l[0]);
+			this.add(cb);
+			this.add(l[1]);
+			this.add(t);
+			this.add(add);
+		}
+
+		public void lab() {
+			this.setLayout(new GridLayout(3, 2, 3, 3));
+			l[1].setText("Label Text: ");
+			t.setBorder(BorderFactory.createLineBorder(Color.black));
+			t.addKeyListener(this);
+			add = new JButton("Add Label");
+			add.addActionListener(this);
+			this.add(l[0]);
+			this.add(cb);
+			this.add(l[1]);
+			this.add(t);
+			this.add(add);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (arg0.getSource() == add) {
+				boolean valid = true;
+				for (int i = 0; i < CFS.length; i++) {
+					if (Type == 3 && CFS[i].Type == 3
+							&& t.getText().equals(CFS[i].Label.getText()))
+						valid = false;
+				}
+				if (valid) {
+					if (Type == 0) {
+						if (cr.getSelectedIndex() > 0) {
+							CFS[cr.getSelectedIndex() - 1].addRB(t.getText());
+							this.dispose();
+							Panel2();
+						} else {
+							field[] tf = CFS;
+							CFS = new field[tf.length + 1];
+							for (int i = 0; i < tf.length; i++)
+								CFS[i] = tf[i];
+							CFS[CFS.length - 1] = new field(
+									cb.getSelectedIndex(), Type, t.getText());
+							this.dispose();
+							Panel2();
+						}
+					} else {
+						if (Type == 3) {
+							lat++;
+							String ts[] = locats;
+							locats = new String[ts.length + 1];
+							for (int i = 0; i < ts.length; i++)
+								locats[i] = ts[i];
+							locats[ts.length] = t.getText() + " section";
+						}
+						field[] tf = CFS;
+						CFS = new field[tf.length + 1];
+						for (int i = 0; i < tf.length; i++)
+							CFS[i] = tf[i];
+						CFS[CFS.length - 1] = new field(cb.getSelectedIndex(),
+								Type, t.getText());
+						this.dispose();
+						Panel2();
+					}
+				}
+			}
+		}
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+				boolean valid = true;
+				for (int i = 0; i < CFS.length; i++) {
+					if (Type == 3 && CFS[i].Type == 3
+							&& t.getText().equals(CFS[i].Label.getText()))
+						valid = false;
+				}
+				if (valid) {
+					if (Type == 0) {
+						if (cr.getSelectedIndex() > 0) {
+							CFS[cr.getSelectedIndex() - 1].addRB(t.getText());
+							this.dispose();
+							Panel2();
+						} else {
+							field[] tf = CFS;
+							CFS = new field[tf.length + 1];
+							for (int i = 0; i < tf.length; i++)
+								CFS[i] = tf[i];
+							CFS[CFS.length - 1] = new field(
+									cb.getSelectedIndex(), Type, t.getText());
+							this.dispose();
+							Panel2();
+						}
+					} else {
+						if (Type == 3) {
+							lat++;
+							String ts[] = locats;
+							locats = new String[ts.length + 1];
+							for (int i = 0; i < ts.length; i++)
+								locats[i] = ts[i];
+							locats[ts.length] = t.getText() + " section";
+						}
+						field[] tf = CFS;
+						CFS = new field[tf.length + 1];
+						for (int i = 0; i < tf.length; i++)
+							CFS[i] = tf[i];
+						CFS[CFS.length - 1] = new field(cb.getSelectedIndex(),
+								Type, t.getText());
+						this.dispose();
+						Panel2();
+					}
+				}
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+		}
+
+	}
+
+	public class field {
+
+		int Location, Type, pan;
+		JLabel Label, l;
+		JRadioButton rb[];
+		JTextPane t;
+		JCheckBox cb;
+		JPanel p;
+		ButtonGroup bgr;
+
+		public field(int location, int type, String label) {
+			Location = location;
+			Type = type;
+			Label = new JLabel(label);
+			Label.setFont(f);
+			if (type == 0) {
+				bgr = new ButtonGroup();
+				rb = new JRadioButton[1];
+				rb[0] = new JRadioButton(label);
+				rb[0].setFont(f);
+				rb[0].setBackground(new Color(123, 185, 80));
+				bgr.add(rb[0]);
+			}
+			if (type == 1) {
+				cb = new JCheckBox(label);
+				cb.setFont(f);
+				cb.setBackground(new Color(123, 185, 80));
+			}
+			if (type == 2) {
+				t = new JTextPane();
+			}
+			if (type == 3) {
+				p = new JPanel();
+				p.setBackground(new Color(123, 185, 80));
+				p.setBorder(BorderFactory.createLineBorder(Color.gray));
+				p.setLayout(new GridLayout(1, 2));
+				p.add(Label);
+				p.add(new JLabel());
+				pan = lat;
+			}
+			if (type == 4)
+				l = new JLabel();
+		}
+
+		public void addRB(String label) {
+			bgr = new ButtonGroup();
+			JRadioButton trb[] = rb;
+			rb = new JRadioButton[trb.length + 1];
+			for (int i = 0; i < trb.length; i++) {
+				rb[i] = trb[i];
+				bgr.add(rb[i]);
+			}
+			rb[rb.length - 1] = new JRadioButton(label);
+			rb[rb.length - 1] = new JRadioButton(label);
+			rb[rb.length - 1].setFont(f);
+			rb[rb.length - 1].setBackground(new Color(123, 185, 80));
+			bgr.add(rb[rb.length - 1]);
+		}
+
+	}
+}

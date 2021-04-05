@@ -1,0 +1,13 @@
+import java.awt.*;
+
+import javax.swing.*;
+
+public class colors extends JApplet{
+
+	public void paint(Graphics p){
+		setSize(1200,700);
+		p.setColor(Color.black);
+		p.fillRect(0, 0, 1100, 700);
+	}
+	
+}

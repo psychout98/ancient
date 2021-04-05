@@ -1,0 +1,247 @@
+import java.awt.BorderLayout;
+
+import java.awt.Container;
+
+import java.awt.GridLayout;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+
+import
+
+java.awt.event.ComponentListener;
+
+import
+
+java.awt.event.ContainerListener;
+
+import
+
+javax.swing.JButton;
+
+import javax.swing.JOptionPane;
+
+import
+
+javax.swing.JFrame;
+
+import
+
+javax.swing.JPanel;
+
+import
+
+javax.swing.JTextArea;
+
+import
+
+javax.swing.JTextField;
+
+public class Calculator extends JFrame implements ActionListener {
+
+	JButton
+
+	one, two, three, four, five, six, seven, eight, nine, zero, plus, minus,
+			times, divide, decimal, neg, enter, clear;
+
+	int digit[] = new int[10];
+
+	String operator;
+
+	double outcome;
+
+	int length;
+
+	double num;
+
+	double num1;
+
+	Calculator() {
+
+		super("Calculator");
+
+		init();
+
+		this.setSize(400, 600);
+
+		this.setVisible(true);
+
+	}
+
+	public void init() {
+
+		JPanel numpad =
+
+		new JPanel(new GridLayout(4, 3));
+
+		JPanel operate =
+
+		new JPanel(new GridLayout(6, 1));
+
+		one = new JButton("1");
+
+		two = new JButton("2");
+
+		three = new JButton("3");
+
+		four = new JButton("4");
+
+		five = new JButton("5");
+
+		six = new JButton("6");
+
+		seven = new JButton("7");
+
+		eight = new JButton("8");
+
+		nine = new JButton("9");
+
+		zero = new JButton("0");
+
+		plus = new JButton("+");
+
+		minus = new JButton("--");
+
+		times = new JButton("x");
+
+		divide = new JButton("/");
+
+		decimal = new JButton(".");
+
+		neg = new JButton("(-)");
+
+		enter = new JButton("ENTER");
+
+		clear = new JButton("Clear");
+
+		one.addActionListener(this);
+
+		two.addActionListener(this);
+
+		three.addActionListener(this);
+
+		four.addActionListener(this);
+
+		five.addActionListener(this);
+
+		six.addActionListener(this);
+
+		seven.addActionListener(this);
+
+		eight.addActionListener(this);
+
+		nine.addActionListener(this);
+
+		zero.addActionListener(this);
+
+		plus.addActionListener(this);
+
+		minus.addActionListener(this);
+
+		times.addActionListener(this);
+
+		divide.addActionListener(this);
+
+		neg.addActionListener(this);
+
+		enter.addActionListener(this);
+
+		clear.addActionListener(this);
+
+		numpad.add(
+
+		seven);
+
+		numpad.add(
+
+		eight);
+
+		numpad.add(
+
+		nine);
+
+		numpad.add(
+
+		four);
+
+		numpad.add(
+
+		five);
+
+		numpad.add(
+
+		six);
+
+		numpad.add(
+
+		one);
+
+		numpad.add(
+
+		two);
+
+		numpad.add(
+
+		three);
+
+		numpad.add(
+
+		zero);
+
+		numpad.add(
+
+		decimal);
+
+		numpad.add(
+
+		neg);
+
+		operate.add(
+
+		clear);
+
+		operate.add(
+
+		divide);
+
+		operate.add(
+
+		times);
+
+		operate.add(
+
+		minus);
+
+		operate.add(
+
+		plus);
+
+		operate.add(
+
+		enter);
+
+		this.add(numpad, BorderLayout.CENTER);
+
+		this.add(operate, BorderLayout.EAST);
+
+	}
+
+	public static void main(String[] args) {
+
+		Calculator calc =
+
+		new Calculator();
+
+		calc.setDefaultCloseOperation(
+
+		EXIT_ON_CLOSE);
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+
+	}
+
+}

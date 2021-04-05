@@ -1,0 +1,25 @@
+import java.awt.*;
+import javax.swing.*;
+
+public class logo extends JApplet{
+
+	
+	public void paint(Graphics p){
+		setSize(600,600);
+		p.setColor(Color.white);
+		p.fillRect(0, 0, 600, 600);
+		p.setColor(Color.black);
+		int o = 300, xs = (int)(10*Math.sqrt(3)), ys = 10;
+		int[][][] pts = new int[650/xs][300/ys][2];
+		for(int j=0;j<300/ys;j++){
+		for(int i=0;i<600/xs-1;i+=2){
+				pts[i][j][0] = i*xs;
+				pts[i][j][1] = (2*j+1)*ys;
+				pts[i+1][j][0] = (i+1)*xs;
+				pts[i+1][j][1] = 2*j*ys;
+				p.fillRect(pts[i][j][0], pts[i][j][1], 1, 1);
+				p.fillRect(pts[i+1][j][0], pts[i+1][j][1], 1, 1);
+			}
+		}
+	}
+}

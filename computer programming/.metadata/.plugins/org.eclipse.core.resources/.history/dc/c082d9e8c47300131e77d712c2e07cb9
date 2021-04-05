@@ -1,0 +1,59 @@
+import java.awt.*;
+
+import javax.swing.*;
+public class Clock extends JFrame{
+	private static  Clockpanel clock;
+	static boolean close=true;
+	static boolean open = false;
+	Clock() throws InterruptedException{
+		super("Clock");
+		init();
+		this.setSize(600,600);
+		this.setVisible(true);
+		while(true){
+			Thread.sleep(300);
+			close=false;
+			open=true;
+			repaint();
+			Thread.sleep(300);
+			open=false;
+			close=true;
+			repaint();
+		}
+		
+	}
+	public void init(){
+		clock = new Clockpanel();
+		this.add(clock);
+	}
+	public static void main(String[]args) throws InterruptedException{
+		
+		Clock window=new Clock();
+		window.setDefaultCloseOperation(3);
+
+	}
+	private class Clockpanel extends JPanel{
+		public void paintComponent(Graphics g){
+			g.setColor(Color.white);
+			g.fillRect(0, 0, 600, 600);
+			g.setColor(new Color(0,255,0));
+			g.fillOval(0,0, 500,500);
+			g.setColor(Color.BLACK);
+			g.fillOval(300, 30, 20, 20);
+			if(close){
+				g.setColor(Color.BLACK);
+			g.drawLine(250, 250, 500, 250);
+			
+			}
+			if(open){
+				g.setColor(Color.white);
+				g.fillRect(250, 150, 250, 200);
+				g.setColor(Color.green);
+				g.setFont(new Font("Times New Roman",Font.BOLD,30));
+				g.drawString("WAKA", 250,520);
+			}
+			
+		}
+	}
+	
+}

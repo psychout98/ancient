@@ -1,0 +1,12 @@
+
+public class WhileLoops {
+
+	public static void main(String[] args) throws InterruptedException{
+		int num=1;
+		while(num<=5000){
+			System.out.println(num);
+			num ++;
+			Thread.sleep(10);
+		}
+	}
+}

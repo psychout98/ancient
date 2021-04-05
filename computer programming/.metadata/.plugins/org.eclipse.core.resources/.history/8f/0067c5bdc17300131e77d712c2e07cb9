@@ -1,0 +1,66 @@
+import java.awt.*;
+
+import javax.swing.*;
+public class Clock extends JFrame{
+	private static  Clockpanel clock;
+	static boolean aSecond=true;
+	static boolean aMinute=true;
+	static boolean aHour=true;
+	static int midx=260;
+	static int midy=260;
+	
+	static int AngleHour=0;
+	static int AngleMinute=0;
+	static int AngleSecond=0;
+	Clock() throws InterruptedException{
+		super("Clock");
+		init();
+		this.setSize(600,600);
+		this.setVisible(true);
+		/*
+		while(true){
+			
+					for(int s=0;s<60;s--){
+						Thread.sleep(100);
+						AngleSecond=s*6;
+						aSecond=true;
+						repaint();
+		}			}
+				*/	
+		
+	}
+	public void init(){
+		clock = new Clockpanel();
+		this.add(clock);
+	}
+	public static void main(String[]args) throws InterruptedException{
+		
+		Clock window=new Clock();
+		window.setDefaultCloseOperation(3);
+
+	}
+	private class Clockpanel extends JPanel{
+		public void paintComponent(Graphics g){
+			g.setColor(Color.yellow);
+			g.fillOval(0,0, 500,500);
+			g.setColor(Color.BLACK);
+			g.fillOval(300, 30, 20, 20);
+			/*
+			g.setColor(Color.black);
+			g.fillOval(0, 0, 520, 520);
+			g.setColor(Color.WHITE);
+			g.fillOval(20, 20, 480, 480);
+			
+			
+			for(int i=0;i<360;i++){
+				if(aSecond){
+					g.setColor(Color.RED);
+					g.drawLine(midx, midy, (int)(midx+(200*(Math.sin(AngleSecond)))), (int)(midy-(200*(Math.cos(AngleSecond)))));
+				}	
+			}
+		
+		*/
+		}
+	}
+	
+}

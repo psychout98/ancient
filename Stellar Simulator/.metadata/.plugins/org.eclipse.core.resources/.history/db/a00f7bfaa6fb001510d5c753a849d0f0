@@ -1,0 +1,270 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+import javax.swing.*;
+
+public class Main extends JFrame
+		implements ActionListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
+
+	JPanel centerPanel, menuPanel;
+	int curX, curY, iX, iY;
+	double curH = 0, curV = 0, angleH = 0, angleV = 0, direc=0,aV=0,aH=0;
+	boolean dragging = false,spinL=false,spinR=false,rotateSim=false,active=false;
+	double Stars[];
+	Random r = new Random();
+
+	Main() throws InterruptedException {
+		super("Solar Nebula Formation Simulator");
+		this.setSize(1000, 700);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(3);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		this.setResizable(false);
+		Stars = new double[4 * (r.nextInt(300) + 300)];
+		for (int i = 0; i < Stars.length / 4; i++) {
+			Stars[4 * i] = 2*Math.PI*r.nextInt(1000)/1000;
+			Stars[(4 * i) + 1] = 2*Math.PI*r.nextInt(1000)/1000;
+			Stars[(4 * i) + 2] = r.nextInt(3) + 1;
+			Stars[(4 * i) + 3] = r.nextInt(3) + 1;
+		}
+		centerPanel = new graphic();
+		centerPanel.addMouseListener(this);
+		centerPanel.addMouseMotionListener(this);
+		this.addKeyListener(this);
+		menuPanel = new JPanel();
+		setMenuPanel();
+		JMenuBar mb = new JMenuBar();
+		JMenu file = new JMenu("File");
+		mb.add(file);
+		this.setJMenuBar(mb);
+		this.add(menuPanel, BorderLayout.NORTH);
+		this.add(centerPanel, BorderLayout.CENTER);
+		this.setVisible(true);
+		while (true) {
+			/*
+			if(spinL)
+				direc++;
+			if(spinR)
+				direc--;
+			if(Math.abs(direc) == 2*Math.PI)
+				direc = 0;
+			direc=0;
+			if(angleV > Math.PI/2){
+			angleV = 89*Math.PI/180;
+			angleH += Math.PI;
+			direc += Math.PI;
+			}
+			if(angleV < -Math.PI/2){
+				angleV = -89*Math.PI/180;
+				angleH += Math.PI;
+				direc += Math.PI;
+				}
+				*/
+			if(rotateSim){
+			angleH+=Math.PI/360;
+			}
+			Thread.sleep(42);
+			repaint();
+			while(!active){
+				Thread.sleep(42);
+			}
+		}
+	}
+
+	public void setMenuPanel() {
+		menuPanel.setLayout(new GridLayout(1, 1)); //
+		menuPanel.setPreferredSize(new Dimension(1000, 65));
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		Main window = new Main();
+	}
+
+	public class graphic extends JPanel {
+
+		public void paint(Graphics p) {
+			setSize(1000, 600);
+			p.setColor(Color.black);
+			p.fillRect(0, 0, 1000, 600);
+			//makeStars(p);
+			makeAxis(p);
+			/*
+			p.setColor(Color.white);
+			int box[] = new int[16];
+			for(int i=0;i<8;i++){
+				box[2*i] = 500+getXYZ((i)%2==0?0:20,(i==0||i==1||i==4||i==5)?0:10,(i==0||i==3||i==5||i==6)?0:10,0);
+				box[(2*i)+1] = 300+getXYZ((i)%2==0?0:20,(i==0||i==1||i==4||i==5)?0:10,(i==0||i==3||i==5||i==6)?0:10,1);
+			}
+			for(int i=0;i<4;i++)
+				for(int j=4;j<8;j++)
+					if(j!=7-i)
+			p.drawLine(box[2*i],box[(2*i)+1],box[(2*j)],box[(2*j)+1]);
+			p.setColor(Color.yellow);
+			for(int i=0;i<2;i++)
+				for(int j=2;j<4;j++)
+				p.drawLine(500+i*getXYZ(20,10,10,0),300+i*getXYZ(20,10,10,1),500+(3-j)*getXYZ(20,10,10,0),300+(j-2)*getXYZ(20,10,10,1));
+			p.setColor(Color.green);
+			p.drawLine(500,300,500+getXYZ(20,10,10,0),300+getXYZ(20,10,10,1));
+			p.drawLine(500,300,500+getXYZ(20,10,0,0),300+getXYZ(20,10,0,1));
+			p.drawLine(500,300,500+getXYZ(0,10,10,0),300+getXYZ(0,10,10,1));
+			p.drawLine(500,300,500+getXYZ(20,0,10,0),300+getXYZ(20,0,10,1));
+			*/
+		}
+
+		public void makeStars(Graphics p) {
+			p.setColor(Color.white);
+			for (int i = 0; i < Stars.length / 4; i++){
+				int sX = getXYZ(40*Math.cos(Stars[4*i])*Math.cos(Stars[(4*i)+1]),40*Math.sin(Stars[(4*i)+1]),40*Math.sin(Stars[4*i])*Math.cos(Stars[(4*i)+1]),0),
+				sY = getXYZ(40*Math.cos(Stars[4*i])*Math.cos(Stars[(4*i)+1]),40*Math.sin(Stars[(4*i)+1]),40*Math.sin(Stars[4*i])*Math.cos(Stars[(4*i)+1]),1),
+				sZ = getXYZ(40*Math.cos(Stars[4*i])*Math.cos(Stars[(4*i)+1]),40*Math.sin(Stars[(4*i)+1]),40*Math.sin(Stars[4*i])*Math.cos(Stars[(4*i)+1]),2);
+				p.fillOval(sZ>0?500+sX:-10,sZ>0?300+sY:-10,
+						(int)Stars[(4 * i) + 2], (int)Stars[(4 * i) + 3]);
+			}
+		}
+
+		public void makeAxis(Graphics p) {
+			int[] axPts = new int[4];
+			for (int i = 0; i < 3; i++) {
+				p.setColor(i == 0 ? Color.green : (i == 1 ? Color.red : Color.yellow));
+				for (int j = 0; j < 4; j++)
+					axPts[j] = (int) ((j == 0 || j == 2 ? 500 : 300) + getXYZ((i == 0 ? (j > 1 ? -24 : 24) : 0),
+							(i == 1 ? (j > 1 ? -24 : 24) : 0), (i == 2 ? (j > 1 ? -24 : 24) : 0), (j == 0 || j == 2)?0:1));
+				p.drawLine(axPts[0], axPts[1], axPts[2], axPts[3]);
+			}
+			p.setFont(new Font("Helvetica", Font.BOLD, 16));
+			p.setColor(Color.green);
+			p.drawString("X", (int) (500 + getXYZ(25, 0, 0, 0)), (int) (300 + getXYZ(25, 0, 0, 1)));
+			p.setColor(Color.red);
+			p.drawString("Y", (int) (500 + getXYZ(0, 25, 0, 0)), (int) (300 + getXYZ(0, 25, 0, 1)));
+			p.setColor(Color.yellow);
+			p.drawString("Z", (int) (500 + getXYZ(0, 0, 25, 0)), (int) (300 + getXYZ(0, 0, 25, 1)));
+			p.setColor(Color.white);
+			int[][][] circle = new int[60][3][91];
+			for (int j = 0; j < 15; j++) {
+				for (int i = 0; i < 91; i++) {
+					for (int v = 0;v<3;v++){
+					circle[2 * j][v][i] = (int) ((v==0?500:(v==1?300:0))
+							+ getXYZ(20 * Math.sin(4*i / (180 / Math.PI)) * Math.sin(12 * j / (180 / Math.PI)),
+									20 * Math.cos(4*i / (180 / Math.PI)) * Math.sin(12 * j / (180 / Math.PI)),
+									20 * Math.cos(12 * j / (180 / Math.PI)), v));
+					circle[(2 * j) + 30][v][i] = (int) ((v==0?500:(v==1?300:0))
+							+ getXYZ(20 * Math.sin(((4*i) / (180 / Math.PI))) * Math.sin(12 * j / (180 / Math.PI)),
+									20 * Math.sin(((4*i) / (180 / Math.PI))) * Math.cos(12 * j / (180 / Math.PI)),
+									20 * Math.cos(((4*i) / (180 / Math.PI))), v));
+					}
+				}
+			}
+			for (int i = 0; i < 60; i++){
+			//	p.setColor(new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255))); //disco
+			//	p.drawPolygon(circle[2 * i], circle[(2 * i) + 1], 90);
+			//	if(circle[2*i][2][23] > 0 || i<30)
+				if(i>30||12*i<angleV*180/Math.PI-90)
+				p.drawPolyline(circle[i][0], circle[i][1], 91);
+			}
+		}
+
+	}
+
+	public int getXYZ(double x, double y, double z, int XYZ) {
+		x += .0001;
+		y += .0001;
+		z += .0001;
+		x *= 10;
+		y *= 10;
+		z *= -10;
+		
+		double r = Math.sqrt((x*x)+(y*y)+(z*z)),
+				rxy = Math.sqrt((x*x)+(y*y)),
+				rxz = Math.sqrt((x*x)+(z*z)),
+				Hpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(y/rxy),
+				Vpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(z/rxz);
+		double Y = ((z * Math.sin(angleV + (Math.PI / 2))) + (rxy * Math.sin(angleV) * Math.cos(angleH + Hpt)));
+		double X = ((y * Math.sin(angleH + (Math.PI / 2))) + (rxz * Math.sin(angleH) * Math.cos(angleV + Vpt)));
+		X = (rxy * Math.sin(angleH + Hpt));
+		double Z=(rxz*Math.cos(angleH + Hpt));
+		return XYZ == 0 ? (int) (X) : (XYZ == 1 ? (int) (Y) : (int) (Z));
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {}
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		iX = arg0.getPoint().x;
+		iY = arg0.getPoint().y;
+		dragging = true;
+		active=true;
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		curH = angleH;
+		curV = angleV;
+		dragging = false;
+		active = false;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		if(arg0.getKeyCode() == KeyEvent.VK_COMMA)
+			spinL = true;
+		if(arg0.getKeyCode() == KeyEvent.VK_PERIOD)
+			spinR = true;
+	}
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		if(arg0.getKeyCode() == KeyEvent.VK_COMMA)
+			spinL = false;
+		if(arg0.getKeyCode() == KeyEvent.VK_PERIOD)
+			spinR = false;
+		if(arg0.getKeyCode() == KeyEvent.VK_S)
+			rotateSim=(rotateSim?false:true);
+		}
+	@Override
+	public void keyTyped(KeyEvent arg0) {}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {}
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		curX = e.getPoint().x;
+		curY = e.getPoint().y;
+		if (dragging) {
+			int Dx = curX - iX, Dy = curY - iY;
+			angleH = ((double) Math.PI * (Dx) / 720) + curH;
+			angleV = ((double) Math.PI * (Dy) / 720) + curV;
+		}
+		if(angleV < 0){
+			angleV = 1439*Math.PI/720;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleV > 2*Math.PI){
+			angleV = 0;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleH < 0){
+			angleH = 1439*Math.PI/720;
+			iX=curX;
+			curH = angleH;
+		}
+		if(angleH > 2*Math.PI){
+			angleH = 0;
+			iX=curX;
+			curH = angleH;
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
+
+}

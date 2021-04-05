@@ -1,0 +1,68 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+import javax.swing.*;
+public class Spectrum extends JFrame{
+	Random rand = new Random();
+	JPanel clock;
+	int r=0,g=0,b=0;
+	Spectrum() throws InterruptedException{
+		super("Clock");
+		init();
+		this.setSize(600,600);
+		this.setVisible(true);
+		this.add(clock);
+		while(true){
+		for(int k=0;k<255;k++){
+		Thread.sleep(10);
+		g++;
+		repaint();
+		}
+		for(int k=0;k<255;k++){
+			Thread.sleep(10);
+			r++;
+			repaint();
+			}
+		for(int k=0;k<255;k++){
+			Thread.sleep(10);
+			b++;
+			repaint();
+			}
+		for(int k=0;k<255;k++){
+		Thread.sleep(10);
+		g--;
+		repaint();
+		}
+		for(int k=0;k<255;k++){
+			Thread.sleep(10);
+			r--;
+			repaint();
+			}
+		for(int k=0;k<255;k++){
+			Thread.sleep(10);
+			b--;
+			repaint();
+			}
+		}
+		
+		
+	}
+	
+	public void init(){
+		clock = new Clockpanel();
+	}
+	public static void main(String[]args) throws InterruptedException{
+		Spectrum window=new Spectrum();
+		window.setDefaultCloseOperation(3);
+	}
+	private class Clockpanel extends JPanel{
+		public void paintComponent(Graphics p){
+			Color Color=new Color(r,g,b);
+			p.setColor(Color);
+			p.fillRect(0, 0, 600, 600);
+			
+			}
+	}
+}

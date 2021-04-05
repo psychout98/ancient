@@ -1,0 +1,18 @@
+import java.util.*;
+public class Pi {
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		double pi = 3.1415926535897932384626433832795028841971693993751058209749445923078;
+		int input[] = new int[65],digit[]=new int[65];
+		System.out.println("3.14");
+		for(int i=5;i<65;i++){
+			digit[i]=String.valueOf(pi).charAt(i);
+			input[i]=scan.nextInt();
+			if(String.valueOf(input[i]).charAt(0)!=String.valueOf(pi).charAt(i))
+				break;
+		}
+
+	}
+
+}

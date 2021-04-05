@@ -1,0 +1,16 @@
+import java.util.Scanner;
+
+
+public class WhileLoops {
+
+	public static void main(String[] args) throws InterruptedException{
+		Scanner scan = new Scanner(System.in);
+		int num=1;
+		while(num>=1){
+			num=scan.nextInt();
+			System.out.println(num);
+//			num ++;
+//			Thread.sleep(50);
+		}
+	}
+}

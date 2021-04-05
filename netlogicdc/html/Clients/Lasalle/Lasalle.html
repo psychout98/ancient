@@ -1,0 +1,45 @@
+<Html>
+<Head>
+<Title>Lasalle Hotel Properties - Netlogicdc</Title>
+<link rel="shortcut icon" type="image/x-icon" href="logo.png" />
+</Head>
+<Body bgcolor="#8CCA61" style="margin:50px">
+<a href="http://www.netlogicdc.com"><img src="logo-white.png" 
+style="width:240px;height:58px;"><br><br><br></a>
+<div style="float:right;margin:10px 50px 0px 0px;width:35%"><div style="float:right;">
+<font size="4" color="white" face="Ariel">Search users:</font>
+<input onkeypress="gathertext(form)" type="search" name="searcher"></div><br><br>
+<font size="5" color="white" face="Ariel">User List</font><br><br>
+<div style="overflow:scroll;width:100%;height:520px;border:1px solid gray;background:#7BB950;">
+<a><a style="float:left;margin:10px"><font size="4" color="black" face="Ariel">Fake User</font></a>
+<a style="float:right;margin:10px"><input type="button" onclick = "showUser('fakeuser')" name="fake-user" value="View User Data"></a></a>
+</div></div><div style="float:left;width:54%;height:540px"><font id="i1" size="6" color="white" face="Ariel">Lasalle Hotel Properties</font><br><br>
+<a style="float:right;"><input type="button" value="New User" onclick="showUser('new')"><input type="button" onclick="makefile()"
+ value="Save User"></a><br><br><form id="uform" style="float:left;overflow:scroll;width:100%;height:520px;border:1px solid gray;background:#7BB950;">
+<div style="margin:10px"><font  size="4" color="black" face="Ariel">These documents serve as tools for adding and editing users and allows netlogicdc technicians to set appropriate permissions for the new user. For security reasons, any new or revised documents must be 
+authorized by an authority at <a id="clientname">Lasalle Hotel Properties</a> to be valid.</font></div>
+</form>
+</div>
+<script>
+function checkdoc(){
+var f = document.getElementById("uform");
+}
+
+function showUser(x){
+if(x=="new"){
+userinfo=new Array("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+}
+else{
+var filename = x+".txt";
+userinfo=new Array("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+}
+document.getElementById("uform").innerHTML="<div style=\"margin:10px\"><font size=\"3\" color=\"black\" face=\"Helvetica\">Provide general user information.<input style=\"float:right;color:red;\" type=\"button\"onclick=\"memo()\"  value=\"X\"><br><br>First Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id=\"fname\"type=\"text\" value=\""+userinfo[0]+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"text\" value=\""+userinfo[1]+"\"><br><br>Employee Title: <input type=\"text\" value=\""+userinfo[2]+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone Extension: <input type=\"text\" value=\""+userinfo[3]+"\"><br><br>Provide general access information. Leave desired username and password blank for netlogicdc default."+"<br><br>Desired Username: <input type=\"text\" value=\""+userinfo[6]+"\">&nbsp;Desired Password: <input type=\"text\" value=\""+userinfo[7]+"\"><br><br>Date to be Active: <input type=\"text\"value=\""+userinfo[8]+"\"><br><br>Email Aliases (if any): <input type=\"text\"value=\""+userinfo[9]+"\"> , <input type=\"text\"value=\""+userinfo[10]+"\"><br><br>Provide specific access information. Set permissions to drives, resources, etc.<br><br><div style=\"width:100%;border:1px solid gray;background:#6AA840;\">APPLICATION ACCESS<br><div style=\"border:1px solid gray;width=100%;\"><br>PeopleSof Access Level - Please mark your selection <i>clearly</i> from one of the following:<br><br><input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[11]+"> Staff Accountant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[12]+"> Analyst&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[13]+"> Asset Manager<br><br><input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[14]+"> Senior Accountant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[15]+"> Controller/Assistant Controller/Accounting Manager<br><br>Should the user have access to nVision? <input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[16]+"> YES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[17]+"> NO<br><br>Should the user have access to PaperVision? <input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[19]+"> YES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"AD\" value=\"AD\" "+userinfo[20]+"> NO<br><br></div></div><br><br><div style=\"width:100%;border:1px solid gray;background:#6AA840;\">DRIVE / RESOURCE ACCESS<div style=\"border:1px solid gray;width=100%;\"><div style=\"width:100%;border:1px solid gray;background:#6AA840;\"><br>Which networked drives should the user have access to?<br><br><input type=\"checkbox\" value=\""+userinfo[50]+"\"> L:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" value=\""+userinfo[51]+"\"> S:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\"value=\""+userinfo[52]+"\"> M:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\"value=\""+userinfo[53]+"\"> Other (specify): &nbsp;&nbsp;&nbsp;&nbsp;<input type=\"text\"value=\""+userinfo[54]+"\"><br><br></div><div style=\"width:100%;border:1px solid gray;background:#6AA840;\"><br>Which calendars should the user have access to?<br><br><input type=\"checkbox\"value=\""+userinfo[55]+"\"> An employee's (please specify): <input type=\"text\"value=\""+userinfo[56]+"\"><br><br><input type=\"checkbox\"value=\""+userinfo[57]+"\"> A group (specify): <input type=\"text\"value=\""+userinfo[58]+"\"><br><br></div><div style=\"width:100%;border:1px solid gray;background:#6AA840;\"><br>Should the user have access to another employee's email?<br><br><input type=\"checkbox\"value=\""+userinfo[59]+"\"> NO&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\"value=\""+userinfo[60]+"\"> YES (Specify): <input type=\"text\"value=\""+userinfo[61]+"\"><br><br></div><div style=\"width:100%;border:1px solid gray;background:#6AA840;\"><br>Which shared peripherals should the user have access to?<br><br>Specify Printers:<input type=\"text\"value=\""+userinfo[62]+"\"> , <input type=\"text\"value=\""+userinfo[63]+"\"> , <input type=\"text\"value=\""+userinfo[64]+"\"><br><br>Specify Other Devices: <input type=\"text\"value=\""+userinfo[65]+"\" size=\"70\"><br><br></div></div></div><br><br><div style=\"width:100%;border:1px solid gray;background:#6AA840;\">Special instructions<textarea name=\"specinstructs\" style=\"margin:2px;resize:none;width:99%;height:150px\" >"+userinfo[66]+"</textarea></div></font></div>";
+}
+function memo(){
+document.getElementById("uform").innerHTML="<div style=\"margin:10px\"><font  size=\"4\" color=\"black\" face=\"Ariel\">These documents serve as tools for adding and editing users and allows netlogicdc "+
+"technicians to set appropriate permissions for the new user. For security reasons, any new or revised documents must be "+
+"authorized by an authority at <a id=\"clientname\">Test Client</a> to be valid.</font></div>";
+}
+</script>
+</Body>
+</Html>

@@ -1,0 +1,200 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+import javax.swing.*;
+
+public class stars extends JFrame
+		implements MouseListener, MouseMotionListener {
+
+	JPanel centerPanel;
+	int curX, curY, iX, iY;
+	double curH = 0, curV = 0, angleH = 0, angleV = 0, direc=0,aV=0,aH=0,Ox=0.001,Oy=0.001,Oz=0.001;
+	boolean dragging = false,active=false;
+	double Stars[];
+	double[][][] b = new double[3][][67];
+	Random r = new Random();
+int t=1;
+	stars() throws InterruptedException {
+		super("Sphere");
+		this.setSize(1000, 700);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(3);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		this.setResizable(false);
+		centerPanel = new graphic();
+		centerPanel.addMouseListener(this);
+		centerPanel.addMouseMotionListener(this);
+		this.add(centerPanel, BorderLayout.CENTER);
+		this.setVisible(true);
+		for(int i=0;i<b.length;i++){
+				int a = 0;
+				int l = (int)(i==0?6:b[i-1][0].length+12*Math.pow(4,i-1));
+				System.out.println(l);
+				b[i] = new double[2][l];
+				for(double v=-Math.pow(2, i);v<=Math.pow(2, i);v++){
+					double hs = (Math.abs(v)==Math.pow(2, i)?1:4*(Math.pow(2, i)-Math.abs(v)));
+					System.out.println(i+" "+v+" "+hs);
+				for(double h=0;h<hs;h++){
+					b[i][1][a]=v*90/Math.pow(2, i);
+					b[i][0][a]=h*360/hs;
+					a++;
+				}
+				}
+				}
+		for(int i=0;i<b.length;i++){
+			for(int j=0;j<b[i][0].length;j++){
+			System.out.println(b[i][0][j]+", "+b[i][1][j]);
+			}
+			System.out.println("-------------");
+			}
+		while (true) {
+			Thread.sleep(42);
+			repaint();
+			t+=(t<b[b.length-1][0].length?1:0);
+			while(!active){
+				Thread.sleep(42);
+			}
+		}
+	}
+
+
+	public static void main(String[] args) throws InterruptedException {
+		stars window = new stars();
+	}
+
+	public class graphic extends JPanel {
+
+		public void paint(Graphics p) {
+			setSize(1000, 700);
+			p.setColor(Color.black);
+			p.fillRect(0, 0, 1000, 700);
+			makeAxis(p);
+		}
+		
+		}
+
+		public void makeAxis(Graphics p) {
+		
+			p.setColor(Color.white);
+		
+			double r = 30;
+			for(int k=b.length-1;k<b.length;k++){
+				for(int j=0;j<t-1;j++){
+				//	p.drawLine(P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,0), P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,1),
+				//			P(b[k][0][j],b[k][1][j],(k)*r/b.length,0), P(b[k][0][j],b[k][1][j],(k)*r/b.length,1));
+					p.fillOval(P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,0), P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,1),1,1);
+				//	p.drawLine(P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,0), P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,1),P(b[k][0][j+1],b[k][1][j+1],(k+1)*r/b.length,0), P(b[k][0][j+1],b[k][1][j+1],(k+1)*r/b.length,1));
+				//	p.drawLine(P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,0), P(b[k][0][j],b[k][1][j],(k+1)*r/b.length,1),P(b[k][0][j+1],b[k][1][j+1],(k+1)*r/b.length,0), P(b[k][0][j+1],b[k][1][j+1],(k+1)*r/b.length,1));
+				}
+				//dickface
+				int a=0;
+					for(double v=-Math.pow(2, k);v<=Math.pow(2, k);v++){
+						double hs = (Math.abs(v)==Math.pow(2, k)?1:4*(Math.pow(2, k)-Math.abs(v)));
+					for(double h=0;h<hs-1;h++){
+					p.drawLine(P(b[k][0][(int)(a+h)],b[k][1][(int)(a+h)],(k+1)*r/b.length,0),P(b[k][0][(int)(a+h)],b[k][1][(int)(a+h)],(k+1)*r/b.length,1),
+							P(b[k][0][(int)(a+h+1)],b[k][1][(int)(a+h+1)],(k+1)*r/b.length,0), P(b[k][0][(int)(a+h+1)],b[k][1][(int)(a+h+1)],(k+1)*r/b.length,1));
+					}
+					p.drawLine(P(b[k][0][(int)(a)],b[k][1][(int)(a)],(k+1)*r/b.length,0),P(b[k][0][(int)(a)],b[k][1][(int)(a)],(k+1)*r/b.length,1),
+							P(b[k][0][(int)(a+hs-1)],b[k][1][(int)(a+hs-1)],(k+1)*r/b.length,0), P(b[k][0][(int)(a+hs-1)],b[k][1][(int)(a+hs-1)],(k+1)*r/b.length,1));
+					if(v<Math.pow(2, k)){
+						double hns = (4*(Math.pow(2, k)-Math.abs(v)+1));
+					for(double l=0;l<hns;l++){
+						System.out.println((b[k][0][(int)(a)]+" "+b[k][1][(int)(a)]+" "+(k+1)*r/b.length));
+						p.drawLine(P(b[k][0][(int)(a)],b[k][1][(int)(a)],(k+1)*r/b.length,0),P(b[k][0][(int)(a)],b[k][1][(int)(a)],(k+1)*r/b.length,1),
+								P(b[k][0][(int)(a+hs+l)],
+										b[k][1][(int)(a+hs+l)],
+										(k+1)*r/b.length,0),
+								P(b[k][0][(int)(a+hs+l)],b[k][1][(int)(a+hs+l)],(k+1)*r/b.length,1));
+					}
+					}
+					a+=hs;
+					}
+				}
+	}
+		public int P(double aH,double aV,double R,int v){
+			return getXYZ(R * Math.cos(aH / (180 / Math.PI)) * Math.cos((aV) / (180 / Math.PI)),
+					R * Math.sin(aH / (180 / Math.PI)) * Math.cos((aV) / (180 / Math.PI)),
+					R * Math.sin((aV) / (180 / Math.PI)),v);
+		}
+		
+		public int getXYZ(double x, double y, double z, int XYZ) {
+			x += Ox/10.0;
+			y += Oy/10.0;
+			z += Oz/10.0;
+			x *= 10;
+			y *= 10;
+			z *= -10;
+			
+			double rxy = Math.sqrt((x*x)+(y*y)),
+					rxz = Math.sqrt((x*x)+(z*z)),
+					Hpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(y/rxy),
+					Vpt = (x>0?0:Math.PI)+(x>0?1:-1)*Math.asin(z/rxz);
+			double Y = ((z * Math.sin(angleV + (Math.PI / 2))) + (rxy * Math.sin(angleV) * Math.cos(angleH + Hpt)));
+			double X = ((y * Math.sin(angleH + (Math.PI / 2))) + (rxz * Math.sin(angleH) * Math.cos(angleV + Vpt)));
+			double Z = 1;
+			X = (rxy * Math.sin(angleH + Hpt));
+			return XYZ == 0 ? (int)X + 500 : XYZ == 1 ? (int)Y + 350 : (int)Z;
+		}
+	
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {}
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		iX = arg0.getPoint().x;
+		iY = arg0.getPoint().y;
+		dragging = true;
+		active=true;
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		curH = angleH;
+		curV = angleV;
+		dragging = false;
+		active = false;
+	}
+
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		curX = e.getPoint().x;
+		curY = e.getPoint().y;
+		if (dragging) {
+			int Dx = curX - iX, Dy = curY - iY;
+			angleH = ((double) Math.PI * (Dx) / 720) + curH;
+			angleV = ((double) Math.PI * (Dy) / 720) + curV;
+		}
+		if(angleV < 0){
+			angleV = 1439*Math.PI/720;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleV > 2*Math.PI){
+			angleV = 0;
+			iY=curY;
+			curV = angleV;
+		}
+		if(angleH < 0){
+			angleH = 1439*Math.PI/720;
+			iX=curX;
+			curH = angleH;
+		}
+		if(angleH > 2*Math.PI){
+			angleH = 0;
+			iX=curX;
+			curH = angleH;
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
+
+}

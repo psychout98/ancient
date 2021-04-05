@@ -1,0 +1,219 @@
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+
+public class MagpieRunner extends JFrame implements ActionListener, KeyListener {
+	static JTextPane Statement, Response;
+	static boolean go = false, responded = false;
+	static String keyword, response, keywords[], responses[], arrayList = "";
+	static File File = new File("Arrays.txt");
+
+	
+
+	MagpieRunner() {
+		super("Chatbot");
+		this.setSize(500, 100);
+		this.setVisible(true);
+		this.setResizable(false);
+		this.setLocation(500,500);
+		this.setLayout(new GridLayout(1, 1));
+		this.setDefaultCloseOperation(3);
+		init();
+	}
+
+	public void init() {
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		Statement = new JTextPane();
+		Statement.setEditable(true);
+		Statement.addKeyListener(this);
+		Statement.setBorder(BorderFactory.createLineBorder(Color.black));
+		Response = new JTextPane();
+		Response.setEditable(false);
+		Response.setBorder(BorderFactory.createLineBorder(Color.black));
+		panel.add(Response);
+		panel.add(Statement);
+		this.add(panel);
+	}
+	
+	public static String getResponse(String statement) {
+		String response = "";
+		boolean any = false;
+		for(int i = 0;i<keywords.length;i++){
+			if(statement.contains(" "+keywords[i]+" ")){
+			response = responses[i];
+			any = true;
+		}
+		}
+		if(!any) {
+			response = getRandomResponse();
+		}
+		return response;
+	}
+	
+	private static String getRandomResponse() {
+		final int NUMBER_OF_RESPONSES = 4;
+		double r = Math.random();
+		int whichResponse = (int) (r * NUMBER_OF_RESPONSES);
+		String response = "";
+
+		if (whichResponse == 0) {
+			response = "Interesting, tell me more.";
+		} else if (whichResponse == 1) {
+			response = "Hmmm.";
+		} else if (whichResponse == 2) {
+			response = "Do you really think so?";
+		} else if (whichResponse == 3) {
+			response = "You don't say.";
+		}
+
+		return response;
+	}
+
+	public static void main(String[] args) throws InterruptedException, IOException, AWTException {
+		MagpieRunner window = new MagpieRunner();
+		redefineArrays();
+		Response.setText("Hello, lets talk.");
+		while (!Statement.getText().toLowerCase().equals("bye")) {
+			if (go) {
+				if (Statement.getText().contains("learn"))
+					learn();
+				else {
+					if(getResponse(" "
+							+ Statement.getText() + " ").startsWith("*"))
+						Action(getResponse(" "
+							+ Statement.getText() + " "));
+					else
+					Response.setText(getResponse(" "
+							+ Statement.getText() + " "));
+
+				}
+				go = false;
+				responded = true;
+			}
+			Thread.sleep(100);
+		}
+	}
+	
+	public static void redefineArrays() throws FileNotFoundException{
+		Scanner as1 = new Scanner(File),as2 = new Scanner(File);
+		int lines=0, k=0;
+		while (as1.hasNextLine()){
+			arrayList+=as1.nextLine()+"\n";
+			lines++;}
+		keywords = new String[lines];
+		responses = new String[lines];
+		for(int l=0;l<lines;l++){
+			String line = as2.nextLine();
+			for(int j = 0;j<line.length();j++)
+				if(line.charAt(j) == ':')
+					k=j;
+			keywords[l] = line.substring(0,k);
+			responses[l] = line.substring(k+1);
+		}
+		
+	}
+	
+	public static void learn() throws IOException, AWTException, InterruptedException {
+		go = false;
+		responded = true;
+		Response.setText("What string of characters should I look for?");
+		while (!go){
+			if (go)
+				break;
+		Thread.sleep(100);
+		}
+		keyword = Statement.getText();
+		Response.setText("How should I respond to this if I see it?");
+		go = false;
+		responded = true;
+		while (!go){
+			if (go)
+				break;
+			Thread.sleep(100);
+		}
+		response = Statement.getText();
+		addMethod();
+		redefineArrays();
+		Response.setText("Hello, let's talk.");
+		Statement.setText("");
+	}
+	
+	
+
+	public static void addMethod() throws IOException {
+		Scanner scan = new Scanner(File);
+		arrayList = "";
+		while(scan.hasNextLine())
+			arrayList += scan.nextLine()+"\n";
+		arrayList+=keyword+":"+response;
+		FileWriter fw = new FileWriter(File.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(arrayList);
+		bw.close();
+
+	}
+	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		if (responded && e.getKeyCode() == e.getKeyCode()) {
+			Statement.setText("");
+			responded = false;
+		}
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		Robot r;
+
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			try {
+				r = new Robot();
+				r.keyPress(KeyEvent.VK_BACK_SPACE);
+			} catch (AWTException e1) {
+				e1.printStackTrace();
+			}
+			go = true;
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+	}
+	
+	public static void Action(String action) throws IOException{
+		String Action = action.substring(1)+".class";
+		File exec = new File(Action);
+		if(!exec.exists())
+			Response.setText("I do not know how to do that.");
+		else
+			Runtime.getRuntime().exec(Action);
+	}
+	
+	
+
+}

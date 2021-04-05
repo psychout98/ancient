@@ -1,0 +1,41 @@
+import java.util.Scanner;
+
+
+public class WhileLoops {
+
+	public static void main(String[] args) throws InterruptedException{
+	/*
+		int num=1;
+		while(num>=1){
+			System.out.println(num);
+			num ++;
+			Thread.sleep(50);
+		}
+	*/
+		Scanner scan=new Scanner(System.in);
+		int num=1;
+		int sysnum=num+1;
+		System.out.println(num);
+		while(true){
+			num=scan.nextInt();
+			sysnum=num+1;
+			if((num+1)%5==0){
+				System.out.println("Buzz");
+			}
+			else{
+				System.out.println(sysnum);
+			}
+			if((sysnum+1)%5==0){
+				String buzzer = scan.nextLine();
+				if(buzzer=="buzz"){
+					System.out.println(sysnum+2);
+				}
+				else{
+					System.out.println("You lose");
+					break;
+				}
+			}
+		}
+	}
+	
+}

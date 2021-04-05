@@ -1,0 +1,364 @@
+import java.awt.AWTException;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+
+import javax.swing.*;
+
+public class TTT extends JFrame implements ActionListener {
+    
+    static boolean b = true;
+    static boolean x = false;
+    static boolean o = false;
+    static boolean s[] = new boolean[9];
+
+    Random chooser = new Random();
+
+    JPanel Box1, Box2, Box3, Box4, Box5, Box6, Box7, Box8, Box9;
+
+    JButton Space1, player;
+    JButton Space2;
+    JButton Space3;
+    JButton Space4;
+    JButton Space5;
+    JButton Space6;
+    JButton Space7;
+    JButton Space8;
+    JButton Space9;
+
+    static JButton X;
+
+    static JButton O;
+
+    public static class choice extends JFrame implements ActionListener {
+
+        choice() {
+
+            super("X or O?");
+
+            init2();
+
+            this.setSize(300, 200);
+
+            this.setVisible(true);
+
+        }
+
+        public void init2() {
+            JPanel panel = new JPanel(new GridLayout(1, 2));
+            X = new JButton("X");
+            O = new JButton("O");
+            X.addActionListener(this);
+            O.addActionListener(this);
+            panel.add(X);
+            panel.add(O);
+            this.add(panel);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == X) {
+                x = true;
+            }
+            if (e.getSource() == O) {
+                o = true;
+            }
+
+        }
+
+    }
+
+    TTT() {
+
+        super("Tic Tac Toe");
+
+        init();
+
+        this.setSize(300, 300);
+
+        this.setVisible(true);
+
+    }
+
+    public void init() {
+
+        this.setLayout(new GridLayout(3, 3));
+        
+        X = new JButton("X");
+        
+        O = new JButton("O");
+
+        Box1 = new JPanel(new GridLayout(1, 1));
+
+        Box2 = new JPanel(new GridLayout(1, 1));
+
+        Box3 = new JPanel(new GridLayout(1, 1));
+
+        Box4 = new JPanel(new GridLayout(1, 1));
+
+        Box5 = new JPanel(new GridLayout(1, 1));
+
+        Box6 = new JPanel(new GridLayout(1, 1));
+
+        Box7 = new JPanel(new GridLayout(1, 1));
+
+        Box8 = new JPanel(new GridLayout(1, 1));
+
+        Box9 = new JPanel(new GridLayout(1, 1));
+
+        Space1 = new JButton();
+
+        Space1.addActionListener(this);
+
+        Space2 = new JButton();
+
+        Space2.addActionListener(this);
+
+        Space3 = new JButton();
+
+        Space3.addActionListener(this);
+
+        Space4 = new JButton();
+
+        Space4.addActionListener(this);
+
+        Space5 = new JButton();
+
+        Space5.addActionListener(this);
+
+        Space6 = new JButton();
+
+        Space6.addActionListener(this);
+
+        Space7 = new JButton();
+
+        Space7.addActionListener(this);
+
+        Space8 = new JButton();
+
+        Space8.addActionListener(this);
+
+        Space9 = new JButton();
+
+        Space9.addActionListener(this);
+
+        Box1.add(Space1);
+
+        Box2.add(Space2);
+
+        Box3.add(Space3);
+
+        Box4.add(Space4);
+
+        Box5.add(Space5);
+
+        Box6.add(Space6);
+
+        Box7.add(Space7);
+
+        Box8.add(Space8);
+
+        Box9.add(Space9);
+
+        this.add(Box1);
+
+        this.add(Box2);
+
+        this.add(Box3);
+
+        this.add(Box4);
+
+        this.add(Box5);
+
+        this.add(Box6);
+
+        this.add(Box7);
+
+        this.add(Box8);
+
+        this.add(Box9);
+
+    }
+
+    public static void main(String[] args) throws InterruptedException, AWTException {
+        choice frame = new choice();
+        frame.setDefaultCloseOperation(3);
+        while(b){
+            if(x){
+                TTT window = new TTT();
+                window.setDefaultCloseOperation(3);
+                break;
+            }
+            if(o){
+                TTT window = new TTT();
+                window.setDefaultCloseOperation(3);
+                break;
+            }
+            Thread.sleep(50);
+        }
+        
+
+        
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        String switcher = "";
+        if(x){
+            switcher = "X";
+            player = new JButton(switcher);
+        }
+        if(o){
+            switcher = "O";
+            player = new JButton(switcher);
+        }
+        
+            if (e.getSource() == Space1) {
+                player = new JButton(switcher);
+                Box1.remove(Space1);
+                validate();
+                Box1.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+                
+                
+            }
+            if (e.getSource() == Space2) {
+                player = new JButton(switcher);
+                Box2.remove(Space2);
+                validate();
+                Box2.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+            if (e.getSource() == Space3) {
+                player = new JButton(switcher);
+                Box3.remove(Space3);
+                validate();
+                Box3.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+            if (e.getSource() == Space4) {
+                player = new JButton(switcher);
+                Box4.remove(Space4);
+                validate();
+                Box4.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+            if (e.getSource() == Space5) {
+                player = new JButton(switcher);
+                Box5.remove(Space5);
+                validate();
+                Box5.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+            if (e.getSource() == Space6) {
+                player = new JButton(switcher);
+                Box6.remove(Space6);
+                validate();
+                Box6.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+            if (e.getSource() == Space7) {
+                player = new JButton(switcher);
+                Box7.remove(Space7);
+                validate();
+                Box7.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+            if (e.getSource() == Space8) {
+                player = new JButton(switcher);
+                Box8.remove(Space8);
+                validate();
+                Box8.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+            if (e.getSource() == Space9) {
+                player = new JButton(switcher);
+                Box9.remove(Space9);
+                validate();
+                Box9.add(player);
+                validate();
+                if(switcher == "X"){
+                    o = true;
+                    x = false;
+                }
+                if(switcher == "O"){
+                    x = true;
+                    o = false;
+                }
+            }
+                        
+        }
+    
+    
+
+    
+
+}
+

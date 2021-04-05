@@ -1,0 +1,44 @@
+<Html>
+<Head>
+<Title>Sign in - Netlogicdc</Title>
+<link rel="shortcut icon" type="image/x-icon" href="logo.png" />
+</Head>
+  <Body bgcolor="#8CCA61">
+<center>
+<br><br><br><br>
+<a href="http://www.netlogicdc.com"><img src="logo-white.png" 
+style="width:240px;height:58px;"><br><br></a>
+<form style="width:430px;height:500px;border:1px solid gray;background:#7BB950">
+<font size="5" color="white" face="Ariel">
+<br><br>
+ Sign in to the client user database system</font>
+ <br><br><br><br><br><br><br><br><br>
+ <A "style = "width:400px;height:300px;float:top-right;">
+  <font size="5" color="white" face="Ariel">
+  Username:&nbsp;</font><input onkeypress="isEnter(form)" type="text" name="uname"><br><br>
+  <font size="5" color="white" face="Ariel">
+  &nbsp;Password: </font><input onkeypress="isEnter(form)" type="password" size="20" name="pass"><br><br>
+  <a><input type="button" onclick="login(this.form)" value="Login"></a>  
+  </A>
+  </form>
+  <script language="javascript">
+  function isEnter(form) {
+	var x = event.keyCode;
+    if(x==13)
+	login(form);
+}
+  function login(form){
+  if(form.uname.value == "worker" && form.pass.value == "pass"){
+  window.location="Workerpage.html";
+  }
+  else if(form.uname.value == "testclient" && form.pass.value == "pass"){
+    window.location="Clients/TestClient/TestClient.html";
+  }
+  else{
+  alert("Incorrect Username and/or Password")
+  }
+  }
+  </script>
+</center>
+
+</Body>

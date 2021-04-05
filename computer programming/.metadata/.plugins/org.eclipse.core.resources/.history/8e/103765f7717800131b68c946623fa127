@@ -1,0 +1,76 @@
+// Noah Heath pd. 4 Semester 1 Project
+import java.util.*;
+public class Table {
+
+	public static void main(String[] args){
+	Random rand = new Random();
+		String Table="";
+		int tablenum=1;
+		int num;
+		String special;
+	System.out.println("Welcome to Food'n'Stuff,\nwe have really good food, and pretty good stuff.");
+	
+	System.out.println("May I have the name of your party please?");
+	Scanner scan = new Scanner(System.in);
+	String name = scan.nextLine();
+	
+	System.out.println("And how many people?");
+	int party = scan.nextInt();
+	tablenum=party/4;
+	
+	System.out.println("Do you need a special table?");
+	special=scan.nextLine();
+	/*
+	if(special.toLowerCase().startsWith("y")){		
+		if(tablenum==1){
+			num=rand.nextInt(5)+96;
+			Table = " table "+num;
+			System.out.println(name+" party of "+party+Table);
+		}
+		if(tablenum==2){
+			num=rand.nextInt(4)+96;
+			Table = " tables "+num+" and "+(num+1);
+			System.out.println(name+" party of "+party+Table);
+		}
+		if(tablenum==3){
+			num=rand.nextInt(3)+96;
+			Table = " tables "+num+", "+(num+1)+", and "+(num+2);
+			System.out.println(name+" party of "+party+Table);
+		}
+		if(tablenum==4){
+			num=rand.nextInt(2)+96;
+			Table = " tables "+num+", "+(num+1)+", "+(num+2)+", and "+(num+3);
+			System.out.println(name+" party of "+party+Table);
+		}
+		if(tablenum==5){
+			num=96;
+			Table = " tables "+num+", "+(num+1)+", "+(num+2)+", "+(num+3)+", and "+(num+4);
+			System.out.println(name+" party of "+party+Table);
+		}
+		if(tablenum>5){
+			System.out.println("I'm sorry, there are no special tables available for a party of your size.");
+		}
+	}
+	if(special.toLowerCase().startsWith("n")){
+		if(tablenum==1){
+			num=rand.nextInt(95)+1;
+			Table = " table "+num;
+			System.out.println(name+" party of "+party+Table);
+		}
+		if(tablenum<1){
+			num=rand.nextInt(95-tablenum)+1;
+			System.out.println(name+" party of "+party);
+			for(int i=0;i<tablenum;i++){
+				Table = " table "+num+i;
+				System.out.println("Table");	
+			}
+		}
+	}
+	*/
+	}
+	
+	
+	}
+	
+
+

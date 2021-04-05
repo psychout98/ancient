@@ -1,0 +1,356 @@
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+
+ public class MagpieRunner extends JFrame implements ActionListener, KeyListener {
+         static JTextPane Statement, Response;
+         static int verbEnd = 0;
+         static boolean go = false, responded = false;
+         static String keyword, response, keywords[], responses[], arrayList = "", words[],definitions[],
+        		 questionStarter[] = {"what"}, array[], verb[],noun[], description[];
+         static File File = new File("Arrays.txt"), File2 = new File("Words.txt");
+
+         MagpieRunner() {
+                 super("Chatbot");
+                 this.setSize(500, 100);
+                 this.setVisible(true);
+                 this.setResizable(false);
+                 this.setLocation(500, 200);
+                 this.setLayout(new GridLayout(1, 1));
+                 this.setDefaultCloseOperation(3);
+                 init();
+         }
+
+         public void init() {
+                 JPanel panel = new JPanel(new GridLayout(1, 2));
+                 Statement = new JTextPane();
+                 Statement.setEditable(true);
+                 Statement.addKeyListener(this);
+                 Statement.setBorder(BorderFactory.createLineBorder(Color.black));
+                 Response = new JTextPane();
+                 Response.setEditable(false);
+                 Response.setBorder(BorderFactory.createLineBorder(Color.black));
+                 panel.add(Response);
+                 panel.add(Statement);
+                 this.add(panel);
+         }
+
+         public static String getResponse(String statement) throws FileNotFoundException {
+                 String response = "";
+                 boolean any = false;
+                 String variable, beginning, ending;
+                 int start,end;
+                 for (int i = 0; i < keywords.length; i++) {
+                         if (statement.contains(" " + keywords[i] + " ")) {
+                                 response = responses[i];
+                                 if(response.contains("~"))
+                                	 response = split(response);
+                                 any = true;
+                         }
+                         for(int k=0;k<keywords[i].length()-10;k++)
+                                 if(keywords[i].substring(k,k+10).contains("<variable>")){
+                                	 System.out.println(keywords[i]);
+                                         beginning = keywords[i].substring(0,k);
+                                         ending = keywords[i].substring(k+10);
+                                         for(int j = 0;j<statement.length()-beginning.length();j++)
+                                         if(statement.substring(0,j).endsWith(beginning)){
+                                                 start = j;
+                                                 for(int x = 0;x<statement.length()-ending.length();x++)
+                                                         if(statement.substring(x).startsWith(ending)){
+                                                                 end = x;
+                                                                 variable = statement.substring(start,end);
+                                                                 response = responses[i].replace("<variable>",variable);
+                                                                 System.out.println(response);
+                                                                 /*if(response.contains("<definition>")){
+                                                                	 response = response.replace("<definition>", define(variable));
+                                                                	 if(response.contains("I don't know."))
+                                                                		 response = "I don't know.";
+                                                                 }*/
+                                                                 any = true;
+                                                         }
+                                         }
+                                 }
+                 }
+                 if (!any) {
+                         response = getRandomResponse();
+                 }
+                 return response;
+         }
+         public static void Respond(String statement) throws IOException{
+        	 if(statement.endsWith("?"))
+        	 	Answer(statement);
+        	 for(int i=0;i<array.length;i++){
+        	 	if(!statement.contains(array[i]))
+        		 Learn(statement);
+        	 	else
+        	 		Response.setText("I knew that.");
+        	 }
+        	/* if(isCommand(statement))
+        		 Action(statement);
+         */
+         
+         
+         }
+         
+         
+         public static void Answer(String statement){
+        	 for(int i=0;i<questionStarter.length;i++)
+        		 if(statement.startsWith(questionStarter[i])){
+        			 for(int j=0;j<array.length;j++){
+        			 if(getVerb(statement, questionStarter[i]).contains(verb[j]) && statement.substring(verbEnd).contains(noun[j])){
+        				 Response.setText(array[j]);
+        			 break;
+        			 }
+         }}}
+         
+         public static String getVerb(String statement, String starter){
+        	 int start = starter.length()+1;
+        	 for(int i=start;i<statement.length();i++)
+        		 if(statement.charAt(i) == ' '){
+        			 verbEnd = i;
+        			 break;
+        		 }
+        	 return statement.substring(start,verbEnd);
+         }
+         
+         
+         public static void Learn(String statement) throws IOException{
+        	 Scanner scan = new Scanner(File2);
+             arrayList = "";
+             while (scan.hasNextLine())
+                     arrayList += scan.nextLine() + "\n";
+             arrayList += statement;
+             FileWriter fw = new FileWriter(File.getAbsoluteFile());
+             BufferedWriter bw = new BufferedWriter(fw);
+             bw.write(arrayList);
+             bw.close();
+         }
+         
+         public static boolean isCommand(String statement){
+        	 return false;
+         }
+         
+         public static String split(String full){
+        	 int seperators = 0;
+        	 for(int i=0;i<full.length();i++)
+        		 if(full.charAt(i) == '~')
+        			 seperators++;
+        	 int seperator[] = new int[seperators], num = 0;
+        	 String response[] = new String[seperators+1];
+        		 for(int j=0;j<full.length();j++){
+        			 if(full.charAt(j) == '~'){
+        			seperator[num] = j;
+        			num++;
+        			 }
+        		 }
+        		 response[0] = full.substring(0,seperator[0]);
+        		 for(int i=1;i<seperators;i++)
+        			 response[i] = full.substring(seperator[i-1]+1,seperator[i]);
+        		 response[seperators] = full.substring(seperator[seperators-1]+1);
+        			 Random rand = new Random();
+        	 return response[rand.nextInt(seperators+1)];
+         }
+
+         private static String getRandomResponse() {
+                 final int NUMBER_OF_RESPONSES = 4;
+                 double r = Math.random();
+                 int whichResponse = (int) (r * NUMBER_OF_RESPONSES);
+                 String response = "";
+
+                 if (whichResponse == 0) {
+                         response = "Interesting, tell me more.";
+                 } else if (whichResponse == 1) {
+                         response = "Hmmm.";
+                 } else if (whichResponse == 2) {
+                         response = "Do you really think so?";
+                 } else if (whichResponse == 3) {
+                         response = "You don't say.";
+                 }
+
+                 return response;
+         }
+
+         public static void main(String[] args) throws InterruptedException,
+                         IOException, AWTException {
+
+                   MagpieRunner window = new MagpieRunner(); 
+                   redefineArrays();
+                   Response.setText("Hello, lets talk."); while
+                   (!Statement.getText().toLowerCase().equals("bye")) {
+                	   if (go) { 
+                	  /* if(Statement.getText().contains("learn")) learn(); 
+                	   else {
+                   if(getResponse(" " + Statement.getText() + " ").startsWith("*"))
+                   Action(getResponse(" " + Statement.getText() + " ")); 
+                   else
+                   Response.setText(getResponse(" " + Statement.getText() + " "));
+
+                  }*/ 
+                	Respond(Statement.getText());
+                	   go = false; 
+                	   responded = true; 
+                	   } 
+                   Thread.sleep(100); 
+                   }
+
+         }
+
+         public static void redefineArrays() throws FileNotFoundException {
+                 Scanner as1 = new Scanner(File2), as2 = new Scanner(File2);
+                 int lines = 0, k = 0, space = 0, space2 = 0;
+                 while (as1.hasNextLine()) {
+                         arrayList += as1.nextLine() + "\n";
+                         lines++;
+                 }
+                 array = new String[lines];
+                 noun = new String[lines];
+                 verb = new String[lines];
+                 description = new String[lines];
+                 //keywords = new String[lines];
+                 //responses = new String[lines];
+                 for (int l = 0; l < lines; l++) {
+                         String line = as2.nextLine();
+                         array[l] = line;
+                         for(int i=0;i<line.length();i++)
+                        	 if(line.charAt(i) == ' '){
+                        		 space = i;
+                        		 i=line.length();
+                        	 }
+                         noun[l] = line.substring(0,space);
+                         for(int i=space+1;i<line.length();i++)
+                        	 if(line.charAt(i) == ' '){
+                        		 space2 = i;
+                        		 i = line.length();
+                        	 }
+                         verb[l] = line.substring(space+1,space2);
+                         description[l] = line.substring(space2+1);
+                         /*
+                         for (int j = 0; j < line.length(); j++)
+                                 if (line.charAt(j) == ':')
+                                         k = j;
+                         
+                         keywords[l] = line.substring(0, k);
+                         responses[l] = line.substring(k + 1);
+                         */
+                         
+                 }
+                 
+
+         }
+
+         public static void learn() throws IOException, AWTException,
+                         InterruptedException {
+                 go = false;
+                 responded = true;
+                 Response.setText("What string of characters should I look for?");
+                 while (!go) {
+                         if (go)
+                                 break;
+                         Thread.sleep(100);
+                 }
+                 keyword = Statement.getText();
+
+                 Response.setText("How should I respond to this if I see it?");
+                 go = false;
+                 responded = true;
+                 while (!go) {
+                         if (go)
+                                 break;
+                         Thread.sleep(100);
+                 }
+                 response = Statement.getText();
+                 if(response.contains("action")){
+                         Response.setText("I need a class file to execute this action.");
+                         JFileChooser JFC = new JFileChooser(System
+                                         .getProperty("user.home") + "\\Desktop");
+                         JFC.showOpenDialog(JFC);
+                         String filename = JFC.getSelectedFile().toString();
+                         File afile = new File(filename);
+                         afile.renameTo(new File(File.getAbsolutePath().substring(0,(int) (File.getAbsolutePath().length()-10)) + afile.getName()));
+                         response = "*"+afile.getName();
+                 }
+                 addMethod();
+                 redefineArrays();
+                 Response.setText("Hello, let's talk.");
+                 Statement.setText("");
+         }
+
+         public static void addMethod() throws IOException {
+                 Scanner scan = new Scanner(File);
+                 arrayList = "";
+                 while (scan.hasNextLine())
+                         arrayList += scan.nextLine() + "\n";
+                 arrayList += keyword + ":" + response;
+                 FileWriter fw = new FileWriter(File.getAbsoluteFile());
+                 BufferedWriter bw = new BufferedWriter(fw);
+                 bw.write(arrayList);
+                 bw.close();
+
+         }
+
+         @Override
+         public void keyPressed(KeyEvent e) {
+
+                 if (responded && e.getKeyCode() == e.getKeyCode()) {
+                         Statement.setText("");
+                         responded = false;
+                 }
+
+         }
+
+         @Override
+         public void keyReleased(KeyEvent e) {
+                 Robot r;
+
+                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                         try {
+                                 r = new Robot();
+                                 r.keyPress(KeyEvent.VK_BACK_SPACE);
+                         } catch (AWTException e1) {
+                                 e1.printStackTrace();
+                         }
+                         go = true;
+                 }
+         }
+
+         @Override
+         public void keyTyped(KeyEvent e) {
+
+         }
+
+         @Override
+         public void actionPerformed(ActionEvent e) {
+
+         }
+
+         public static void Action(String action) throws IOException {
+        	 /*
+                 String Action = action.substring(1);
+                 File exec = new File(Action);
+                 Action = "open " + exec.getAbsolutePath();
+                 if (!exec.exists())
+                         Response.setText("I do not know how to do that.");
+                 else
+                         Runtime.getRuntime().exec(Action);
+                         */
+         }
+
+ }

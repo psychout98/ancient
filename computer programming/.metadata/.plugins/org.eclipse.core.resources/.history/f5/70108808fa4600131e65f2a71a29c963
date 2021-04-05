@@ -1,0 +1,38 @@
+import java.awt.AWTException;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class samsint{
+	public static void main(String[] args) throws InterruptedException,
+			AWTException, IOException {
+		Random randomizer = new Random();
+		Robot r = new Robot();
+		boolean b = true;
+			Runtime.getRuntime().exec("notepad");
+			//while(b){
+			Thread.sleep(5000);
+				for(int i=0;i<1000;i++){
+				if(randomizer.nextInt(2) == 0){
+				r.keyPress(KeyEvent.VK_1);
+				Thread.sleep(50);
+				}
+				if(randomizer.nextInt(2) == 1){
+				r.keyPress(KeyEvent.VK_0);
+				Thread.sleep(50);
+				}
+			}
+				
+	}
+
+
+	}

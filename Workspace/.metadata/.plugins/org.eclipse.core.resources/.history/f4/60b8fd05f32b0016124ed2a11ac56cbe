@@ -1,0 +1,163 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.*;
+
+public class logo extends JFrame implements ActionListener, KeyListener{
+	
+	JPanel panel, top,liner,tc,adder;
+	JButton newLine, addPoint,cancel;
+	JTextPane tpx,tpy,added;
+	boolean adding, pluspt;
+	int[][][] line = {{{0,-2},{0,0},{2,1}},
+						{{-2,1},{0,0}},
+						{{-1,2},{0,1},{1,2}},
+						{{-2,0},{-1,0},{-1,-1}}},
+			temp = new int[0][0][0];
+	
+	logo() throws InterruptedException{
+		this.setSize(600, 700);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		top = new JPanel(new BorderLayout());
+		addPoint = new JButton("Add Point");
+		addPoint.addActionListener(this);
+		tpx = new JTextPane();
+		tpx.setBorder(BorderFactory.createLineBorder(Color.black));
+		tpy = new JTextPane();
+		tpy.setBorder(BorderFactory.createLineBorder(Color.black));
+		newLine = new JButton("Add Line");
+		newLine.addActionListener(this);
+		cancel = new JButton();
+		cancel.addActionListener(this);
+		JLabel lx = new JLabel("            X:"),ly = new JLabel("            Y:");
+		liner = new JPanel(new GridLayout(2,1));
+		liner.add(newLine);
+		liner.add(cancel);
+		tc = new JPanel(new GridLayout(2,1));
+	//	tc.setVisible(false);
+		adder = new JPanel(new GridLayout(1,5));
+		added = new JTextPane();
+		added.setBorder(BorderFactory.createLineBorder(Color.black));
+		added.setEditable(false);
+		adder.add(lx);
+		adder.add(tpx);
+		adder.add(ly);
+		adder.add(tpy);
+		adder.add(addPoint);
+		tc.add(adder);
+		tc.add(added);
+		panel = new graphic();
+		top.add(liner, BorderLayout.WEST);
+		top.add(tc, BorderLayout.CENTER);
+		this.add(top,BorderLayout.NORTH);
+		this.add(panel, BorderLayout.CENTER);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(3);
+		while(true){
+			Thread.sleep(42);
+			repaint();
+		}
+	}
+	
+	public void add(){
+		int[][] hold = temp[temp.length-1];
+		temp[temp.length-1] = new int[hold.length+1][2];
+		for(int i=0;i<hold.length;i++){
+			temp[temp.length-1][i][0] = hold[i][0];
+			temp[temp.length-1][i][1] = hold[i][1];
+		}
+			temp[temp.length-1][hold.length][0] = Integer.parseInt(tpx.getText());
+			temp[temp.length-1][hold.length][1] = Integer.parseInt(tpy.getText());
+			added.setText(added.getText()+", ("+temp[temp.length-1][hold.length][0]+", "+temp[temp.length-1][hold.length][1]+")");
+			tpx.setText("");
+			tpy.setText("");
+	}
+	
+	public static void main(String[] args) throws InterruptedException{
+		logo window = new logo();
+	}
+
+	public class graphic extends JPanel{
+	
+	public void paint(Graphics p){
+		setSize(600,600);
+		p.setColor(Color.white);
+		p.fillRect(0, 0, 600, 600);
+		p.setColor(Color.gray);
+		int o = 300, xs = (int)(10*Math.sqrt(3)), ys = 10,xl=620/xs,yl=300/ys;
+		for(int i=0;i<xl;i++){
+		p.drawLine(xs*xl/2, 2*ys*i-5, xs*xl/2, ys*(2*i+1)-5);
+		p.drawLine(xs*i+5, ys*(yl-1), xs*(2*i+1)/2+5, ys*(yl-1));
+		}
+		p.setColor(Color.black);
+		int[][][] pts = new int[xl][yl][2];
+		for(int j=0;j<yl;j++){
+		for(int i=0;i<xl-1;i+=2){
+				pts[i][j][0] = i*xs;
+				pts[i][j][1] = (2*j+1)*ys;
+				pts[i+1][j][0] = (i+1)*xs;
+				pts[i+1][j][1] = 2*j*ys;
+				p.fillRect(pts[i][j][0], pts[i][j][1], 1, 1);
+				p.fillRect(pts[i+1][j][0], pts[i+1][j][1], 1, 1);
+			}
+		}
+		for(int l=0;l<line.length;l++)
+			for(int pt=0;pt<line[l].length-1;pt++)
+				p.drawLine(xs*xl/2+xs*line[l][pt][0], ys*(yl-1)+(line[l][pt][0]%2==0?0:ys)-2*ys*line[l][pt][1], xs*xl/2+xs*line[l][pt+1][0], ys*(yl-1)+(line[l][pt+1][0]%2==0?0:ys)-2*ys*line[l][pt+1][1]);
+		for(int l=0;l<temp.length;l++)
+			for(int pt=0;pt<temp[l].length-1;pt++)
+				p.drawLine(xs*xl/2+xs*temp[l][pt][0], ys*(yl-1)+(temp[l][pt][0]%2==0?0:ys)-2*ys*temp[l][pt][1], xs*xl/2+xs*temp[l][pt+1][0], ys*(yl-1)+(temp[l][pt+1][0]%2==0?0:ys)-2*ys*temp[l][pt+1][1]);
+
+	}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER && adding && tpx.getText().length()>0 && tpy.getText().length()>0)
+			add();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == newLine && !adding){
+			adding = true;
+			tc.setVisible(true);
+			cancel.setText("Cancel");
+			int[][][] hold = temp;
+			temp = new int[hold.length+1][][];
+			for(int i=0;i<hold.length;i++)
+				for(int j=0;j<hold[i].length;j++){
+					temp[i][j][0] = hold[i][j][0];
+					temp[i][j][1] = hold[i][j][1];
+				}
+			temp[hold.length] = new int[0][0];
+		}
+		if(e.getSource() == newLine && adding){
+			adding = false;
+			tc.setVisible(false);
+			tpx.setText("");
+			tpy.setText("");
+			System.out.println(added.getText());
+		}
+		if(e.getSource() == cancel && adding){
+			adding = false;
+			tc.setVisible(false);
+			tpx.setText("");
+			tpy.setText("");
+		}
+		if(e.getSource() == addPoint && adding && tpx.getText().length()>0 && tpy.getText().length()>0)
+			add();
+	}
+}

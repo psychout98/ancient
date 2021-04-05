@@ -1,0 +1,150 @@
+<Html>
+<Head>
+<Title>Test Client - Netlogicdc</Title>
+<link rel="shortcut icon" type="image/x-icon" href="logo.png" />
+</Head>
+<Body bgcolor="#8CCA61" style="margin:50px 80px 80px 80px">
+<a href="http://www.netlogicdc.com"><img src="logo-white.png" 
+style="width:240px;height:58px;"><br><br><br></a>
+<div style="float:right;width:40%"><div style="float:right;">
+<font size="4" color="white" face="Ariel">Search users:</font>
+<input onkeypress="gathertext(form)" type="search" name="searcher"></div><br><br>
+<font size="5" color="white" face="Ariel">User List</font><br><br>
+<div style="overflow:scroll;width:100%;height:570px;border:1px solid gray;background:#7BB950;">
+<a><a style="float:left;margin:10px"><font size="4" color="black" face="Ariel">Fake User</font></a>
+<a style="float:right;margin:10px"><input type="button" onclick = "showUser('fakeuser')" name="fake-user" value="View User Data"></a></a>
+</div></div><div style="float:left;width:55%;height:540px"><font id="i1" size="6" color="white" face="Ariel">Test Client</font><br><br>
+<a style="float:right;"><input type="button" value="New User" onclick="showUser('new')"><input type="button" onclick="makefile()"
+ value="Save User"></a><br><br><form id="uform" style="float:left;overflow:scroll;width:100%;height:520px;border:1px solid gray;background:#7BB950;">
+<div style="margin:10px"><font  size="4" color="black" face="Ariel">These documents serve as tools for adding and editing users and allows netlogicdc 
+technicians to set appropriate permissions for the new user. For security reasons, any new or revised documents must be 
+authorized by an authority at <a id="clientname">Test Client</a> to be valid.</font></div>
+</form>
+</div>
+<script>
+function checkdoc(){
+var f = document.getElementById("uform");
+var fname = f.fname.value;var lname = f.lname.value;var etitle = f.etitle.value;var phonext = f.phonext.value;
+var sdate = f.sdate.value;var dlocat = f.dlocat.value;var email = f.email.value;var duname = f.duname.value;
+var dpass = f.dpass.value;var emalias = f.emalias.value;var otheremp1 = f.otheremp1.value;var Achecked = f.Achecked.value;
+var Bchecked = f.Bchecked.value;var Cchecked = f.Cchecked.value;var Dchecked = f.Dchecked.value;var CLchecked = f.CLchecked.value;
+var Echecked = f.Echecked.value;var ucal = f.ucal.value;var gcal = f.gcal.value;var empaccn = f.empaccn.value;
+var empaccy = f.empaccy.value;var appaccy1 = f.appaccy1.value;var empaccn2 = f.empaccn2.value;var empaccy2 = f.empaccy2.value;
+var otheremp2 = f.otheremp2.value;var ALchecked = f.ALchecked.value;var BLchecked = f.BLchecked.value;var DLchecked = f.DLchecked.value;
+var ELchecked = f.ELchecked.value;var printers = f.printers.value;var otherDevs = f.otherDevs.value;var appaccn1 = f.appaccn1.value;
+var acclev1 = f.acclev1.value;var appaccn2 = f.appaccn2.value;var appaccy2 = f.appaccy2.value;var acclev2 = f.acclev2.value;
+var appaccn3 = f.appaccn3.value;var acclev3 = f.acclev3.value;var remaccy = f.remaccy.value;var remaccn = f.remaccn.value;
+var remacc = f.remacc.value;var special = f.special.value;var appaccy3 = f.appaccy3.value;
+
+}
+
+function showUser(x){
+if(x=="new"){
+var fname="";var lname="";var etitle="";var phonext="";var sdate="";
+var dlocat="";var email="";var duname="";var dpass="";var emalias="";var otheremp1 ="";
+var Achecked="";var Bchecked="";var Cchecked="";var Dchecked="";var CLchecked="";
+var Echecked="";var ucal="";var gcal="";var empaccn="";var empaccy="";var appaccy1="";
+var empaccn2="";var empaccy2="";var otheremp2 ="";var ALchecked="";var BLchecked="";
+var DLchecked="";var ELchecked="";var printers="";var otherDevs="";var appaccn1="";
+var acclev1="";var appaccn2="";var appaccy2="";var acclev2="";var appaccn3="";
+var acclev3="";var remaccy="";var remaccn="";var remacc="";var special="";var appaccy3="";
+}
+else{
+var filename = x+".txt";
+var fname="Fake";var lname="User";var etitle="worker";var phonext="1234";var sdate="2/17/13";
+var dlocat="Location";var email="email@email.com";var duname="user";var dpass="pass";var emalias="";var otheremp1 ="Fake Employee";
+var Achecked="";var Bchecked="";var Cchecked="checked";var Dchecked="checked";var CLchecked="checked";
+var Echecked="";var ucal="Schedule";var gcal="Birthdays";var empaccn="";var empaccy="checked";var appaccy1="checked";
+var empaccn2="";var empaccy2="checked";var otheremp2 ="Real Employee";var ALchecked="checked";var BLchecked="";
+var DLchecked="";var ELchecked="";var printers="Fake Printer";var otherDevs="Fake Scanner";var appaccn1="";
+var acclev1="Level 1";var appaccn2="";var appaccy2="checked";var acclev2="Level 2";var appaccn3="Checked";
+var acclev3="";var remaccy="checked";var remaccn="";var remacc="All access";var special="No special instuctions";var appaccy3="";
+}
+document.getElementById("uform").innerHTML="<div style=\"margin:10px\">"+
+"<font size=\"3\" color=\"black\" face=\"Helvetica\">"+
+"Provide general user information.<input style=\"float:right;color:red;\" type=\"button\"onclick=\"memo()\"  value=\"X\"><br><br>"+
+"First Name: <input id=\"fname\" type=\"text\" value=\""+fname+
+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: <input type=\"text\" value=\""+lname+
+"\"><br><br>Employee Title: <input type=\"text\" value=\""+etitle+
+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone Extension: <input type=\"text\" value=\""+phonext+
+"\"><br><br>Start Date: <input type=\"text\" value=\""+sdate+
+"\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desk Location: <input type=\"text\" value=\""+dlocat+
+"\"><br><br>Provide general access information. Leave desired username and password blank for netlogicdc default."+
+"<br><br>Email Address (will auto-populate): <input type=\"text\" size=\"60\" value=\""+email+
+"\"><br><br>Desired Username: <input type=\"text\" value=\""+duname+
+"\">&nbsp;Desired Password: <input type=\"text\" value=\""+dpass+
+"\"><br><br>Email Aliases (if any): <input type=\"text\" size=\"60\" value=\""+emalias+
+"\"><br><br>Provide specific access information. Set permissions to drives, resources, etc."+
+"<br><br><div style=\"width:760px;border:1px solid gray;background:#6AA840;\">"+
+"DRIVE / RESOURCE ACCESS<br><div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Which networked drives should the user have access to?<br><br>"+
+" <input type=\"checkbox\" name=\"AD\" value=\"AD\" "+Achecked+"> A:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"BD\" value=\"BD\" "+Bchecked+"> B:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"CD\" value=\"CD\" "+Cchecked+"> C:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"DD\" value=\"DD\" "+Dchecked+"> D:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"ED\" value=\"ED\" "+Echecked+"> E:\\ Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+"<br><br></div><div style=\"border:1px solid gray;width=760px;\"><br>Which calendars should the user have access to?<br><br>"+
+"A user's (specify): <input type=\"text\" value=\""+ucal+
+"\"> A group (specify): <input type=\"text\" value=\""+gcal+
+"\"><br><br>"+
+"</div><div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Should the user have access to another user's email?<br><br>"+
+"<input type=\"checkbox\" name=\"empaccn\" value=\"empaccn\" "+empaccn+"> No"+
+"<input type=\"checkbox\" name=\"empaccy\" value=\"empaccy\" "+empaccy+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;"+
+"Specify: <input type=\"text\" value=\""+otheremp1+
+"\"><br><br></div><div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Should another employee have access to the new user's email?<br><br>"+
+"<input type=\"checkbox\" name=\"empaccn2\" value=\"empaccn2\" "+empaccn2+"> No"+
+"<input type=\"checkbox\" name=\"empaccy2\" value=\"empaccy\" "+empaccy2+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;"+
+"Specify: <input type=\"text\" value=\""+otheremp2+
+"\"><br><br></div><div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Should the user be included in any of the following email distribution lists?<br><br>"+
+" <input type=\"checkbox\" name=\"AL\" value=\"AL\" "+ALchecked+"> List A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"BL\" value=\"BL\" "+BLchecked+"> List B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"CL\" value=\"CL\" "+CLchecked+"> List C&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"DL\" value=\"DL\" "+DLchecked+"> List D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+" <input type=\"checkbox\" name=\"EL\" value=\"EL\" "+ELchecked+"> List E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+"<br><br></div><div style=\"border:1px solid gray;width=760px;\"><br>Which shared peripherals should the user have access to?<br><br>"+
+"Printers: <input type=\"text\" value=\""+printers+
+"\"> Other Devices: <input type=\"text\" value=\""+otherDevs+
+"\"><br><br></div></div>"+
+"<br><br><div style=\"width:760px;border:1px solid gray;background:#6AA840;\">"+
+"APPLICATION ACCESS"+
+"<div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Should the user have access to 'SPECIFIC APPLICATION A'?<br><br>"+
+"<input type=\"checkbox\" name=\"appaccn1\" value=\"appaccn1\" "+appaccn1+"> No"+
+"<input type=\"checkbox\" name=\"appaccy1\" value=\"appaccy1\" "+appaccy1+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;"+
+"Specify access level: <input type=\"text\" size=\"50\" value=\""+acclev1+
+"\"><br><br></div>"+
+"<div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Should the user have access to 'SPECIFIC APPLICATION B'?<br><br>"+
+"<input type=\"checkbox\" name=\"appaccn2\" value=\"appaccn2\" "+appaccn2+"> No"+
+"<input type=\"checkbox\" name=\"appaccy2\" value=\"appaccy2\" "+appaccy2+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;"+
+"Specify access level: <input type=\"text\" size=\"50\" value=\""+acclev2+
+"\"><br><br></div>"+
+"<div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Should the user have access to 'SPECIFIC APPLICATION C'?<br><br>"+
+"<input type=\"checkbox\" name=\"appaccn3\" value=\"appaccn3\" "+appaccn3+"> No"+
+"<input type=\"checkbox\" name=\"appaccy3\" value=\"appaccy3\" "+appaccy3+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;"+
+"Specify access level: <input type=\"text\" size=\"50\" value=\""+acclev3+
+"\"><br><br></div>"+
+"<div style=\"border:1px solid gray;width=760px;\">"+
+"<br>Should the user have remote access?<br><br>"+
+"<input type=\"checkbox\" name=\"remaccn\" value=\"remaccn\" "+remaccn+"> No"+
+"<input type=\"checkbox\" name=\"remaccy\" value=\"remaccy\" "+remaccy+"> Yes &nbsp;&nbsp;&nbsp;&nbsp;"+
+"Specify access: <input type=\"text\" size=\"50\" value=\""+remacc+
+"\"><br><br></div>"+
+"</div>"+
+"<br><br><div style=\"width:760px;border:1px solid gray;background:#6AA840;\">"+
+"Special instructions<textarea name=\"specinstructs\" style=\"margin:2;resize:none\" cols=\"105\" rows=\"10\">"+special+"</textarea>"+
+"</div>"+
+"</font></div>";
+}
+function memo(){
+document.getElementById("uform").innerHTML="<div style=\"margin:10px\"><font  size=\"4\" color=\"black\" face=\"Ariel\">These documents serve as tools for adding and editing users and allows netlogicdc "+
+"technicians to set appropriate permissions for the new user. For security reasons, any new or revised documents must be "+
+"authorized by an authority at <a id=\"clientname\">Test Client</a> to be valid.</font></div>";
+}
+</script>
+</Body>
+</Html>

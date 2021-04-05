@@ -1,0 +1,109 @@
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.io.*;
+import javax.swing.plaf.*;
+import java.awt.event.*;
+
+public class googleSearch extends JFrame implements ActionListener {
+     private static final long serialVersionUID = 1L;
+    static boolean close = true;
+    static boolean g = false;
+    static boolean w = false;
+    static boolean b = false;
+    static boolean y = false;
+
+     static boolean go = true;
+
+
+
+
+
+    JButton google, wiki, bing, yahoo;
+    static String in, s;
+    static googleSearch window;
+
+    googleSearch() {
+        super("Websites");
+        init();
+         this.setSize(400, 140);
+        this.setVisible(close);
+    }
+    public void init() {
+        JPanel panel = new JPanel(new GridLayout(1, 4));
+        google = new JButton("Google");
+        wiki = new JButton("Wikipedia");
+         bing = new JButton("Bing");
+        yahoo = new JButton("Yahoo");
+        google.addActionListener(this);
+        wiki.addActionListener(this);
+        bing.addActionListener(this);
+         yahoo.addActionListener(this);
+        panel.add(google);
+        panel.add(wiki);
+        panel.add(bing);
+        panel.add(yahoo);
+        this.add(panel, BorderLayout.CENTER);
+    }
+    public static void main(String[] args) throws AWTException, IOException,
+             InterruptedException {
+
+        boolean tryagain = true;
+
+        window = new googleSearch();
+        window.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        Robot r = new Robot();
+        robotGuide aweRobot = new robotGuide();
+
+         while(tryagain){
+        Thread.sleep(100);
+        if(go == false){
+
+        char[] userType = new char[s.length()];
+        java.awt.Desktop.getDesktop().browse(
+                java.net.URI.create("http://" + in + ".com"));
+         Thread.sleep(8000);
+        for (int i = 0; i < userType.length; i++) {
+            userType[i] = s.charAt(i);
+            aweRobot.type(userType[i]);
+            Thread.sleep(50);
+        }
+        r.keyPress(KeyEvent.VK_ENTER);
+
+         tryagain = false;
+        }
+        if(go == true){
+        tryagain = true;    
+
+        }
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == google) {
+             in = "Google";
+            close = false;
+
+        }
+        if (e.getSource() == wiki) {
+            in = "Wikipedia";
+            close = false;
+
+        }
+        if (e.getSource() == bing) {
+             in = "Bing";
+            close = false;
+        }
+        if (e.getSource() == yahoo) {
+            in = "Yahoo";
+            close = false;
+        }
+
+        window.setVisible(close);
+         s = JOptionPane.showInputDialog(in);
+        go = false;
+        
+    }
+}

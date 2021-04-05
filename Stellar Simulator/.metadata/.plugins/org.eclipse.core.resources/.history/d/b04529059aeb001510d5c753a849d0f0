@@ -1,0 +1,107 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+public class Main extends JFrame implements ActionListener, KeyListener, MouseListener{
+
+	JPanel centerPanel, menuPanel;
+	JButton button;
+	
+	Main(){
+		super("Stellar Simulator");
+		this.setSize(1000,700);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(3);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		this.setResizable(false);
+		centerPanel = new graphic();
+		setCenterPanel();
+		menuPanel = new JPanel();
+		setMenuPanel();
+		JMenuBar mb = new JMenuBar();
+		this.add(menuPanel, BorderLayout.NORTH);
+		this.add(centerPanel, BorderLayout.CENTER);
+		this.setVisible(true);
+	}
+	
+	public void setCenterPanel(){
+		
+	}
+	
+	public void setMenuPanel(){
+		menuPanel.setLayout(new GridLayout(1,1)); //
+		menuPanel.setSize(1000,100);
+		button = new JButton("bloop");
+		menuPanel.add(button);
+	}
+	
+	public static void main(String[] args){
+		Main window = new Main();
+	}
+	
+	public class graphic extends JPanel{
+		
+		public void paint(Graphics p){
+			setSize(1000,600);
+			p.setColor(Color.black);
+			p.fillRect(0, 0, 800, 700);
+		}
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

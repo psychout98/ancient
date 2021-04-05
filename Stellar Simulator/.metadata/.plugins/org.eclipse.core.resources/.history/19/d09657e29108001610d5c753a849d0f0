@@ -1,0 +1,53 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class corey extends JFrame {
+	
+	JPanel panel = new graphic();
+	
+	corey() throws InterruptedException{
+		super("Corey's Silly Chemathon Project");
+		this.setSize(500, 500);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(3);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		this.setResizable(false);
+		this.add(panel, BorderLayout.CENTER);
+		this.setVisible(true);
+		while(true){
+			Thread.sleep(42);
+			repaint();
+		}
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		corey window = new corey();
+	}
+
+	public class graphic extends JPanel{
+		
+		public void paint(Graphics p){
+			p.setColor(Color.gray);
+			p.fillRect(0, 0, 500, 500);
+			p.setColor(Color.white);
+			p.fillRect(100, 50, 300, 400);
+			p.setColor(Color.gray);
+			p.fillRect(100, 425, 25, 25);
+			p.fillRect(375, 425, 25, 25);
+			p.setColor(Color.white);
+			p.fillOval(100, 400, 50, 50);
+			p.fillOval(350, 400, 50, 50);
+			p.setColor(Color.black);
+			p.drawLine(100, 50, 100, 425);
+			p.drawLine(125, 450, 375, 450);
+			p.drawLine(400, 50, 400, 425);
+			p.drawArc(100, 400, 50, 50, 180, 90);
+		}
+		
+	}
+}
